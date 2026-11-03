@@ -302,8 +302,8 @@
       </div>
 
       <div class="grid grid-cols-2 gap-3 mb-6">
-        <div><label class="block text-xs font-semibold text-slate-700 mb-1.5">Dari Kode</label><input id="csvStartCode" type="text" placeholder="RPC-001" autocomplete="off" class="w-full bg-slate-50 border border-slate-200 rounded-2xl p-3 text-sm font-semibold uppercase"></div>
-        <div><label class="block text-xs font-semibold text-slate-700 mb-1.5">Sampai Kode</label><input id="csvEndCode" type="text" placeholder="RPC-050" autocomplete="off" class="w-full bg-slate-50 border border-slate-200 rounded-2xl p-3 text-sm font-semibold uppercase"></div>
+        <div><label class="block text-xs font-semibold text-slate-700 mb-1.5">Dari Kode</label><input id="csvStartCode" type="text" placeholder="RSC-RTL-..." autocomplete="off" class="w-full bg-slate-50 border border-slate-200 rounded-2xl p-3 text-sm font-semibold uppercase"></div>
+        <div><label class="block text-xs font-semibold text-slate-700 mb-1.5">Sampai Kode</label><input id="csvEndCode" type="text" placeholder="RSC-RTL-..." autocomplete="off" class="w-full bg-slate-50 border border-slate-200 rounded-2xl p-3 text-sm font-semibold uppercase"></div>
       </div>
 
       <div class="flex gap-2">
@@ -336,8 +336,8 @@
       </div>
 
       <div class="grid grid-cols-2 gap-3 mb-6">
-        <div><label class="block text-xs font-semibold text-slate-700 mb-1.5">Dari Kode</label><input id="zipStartCode" type="text" placeholder="RPC-001" autocomplete="off" class="w-full bg-slate-50 border border-slate-200 rounded-2xl p-3 text-sm font-semibold uppercase"></div>
-        <div><label class="block text-xs font-semibold text-slate-700 mb-1.5">Sampai Kode</label><input id="zipEndCode" type="text" placeholder="RPC-050" autocomplete="off" class="w-full bg-slate-50 border border-slate-200 rounded-2xl p-3 text-sm font-semibold uppercase"></div>
+        <div><label class="block text-xs font-semibold text-slate-700 mb-1.5">Dari Kode</label><input id="zipStartCode" type="text" placeholder="RSC-RTL-..." autocomplete="off" class="w-full bg-slate-50 border border-slate-200 rounded-2xl p-3 text-sm font-semibold uppercase"></div>
+        <div><label class="block text-xs font-semibold text-slate-700 mb-1.5">Sampai Kode</label><input id="zipEndCode" type="text" placeholder="RSC-RTL-..." autocomplete="off" class="w-full bg-slate-50 border border-slate-200 rounded-2xl p-3 text-sm font-semibold uppercase"></div>
       </div>
 
       <div class="flex gap-2">
@@ -370,8 +370,8 @@
       </div>
 
       <div class="grid grid-cols-2 gap-3 mb-6">
-        <div><label class="block text-xs font-semibold text-slate-700 mb-1.5">Dari Kode</label><input id="designZipStartCode" type="text" placeholder="RPC-001" autocomplete="off" class="w-full bg-slate-50 border border-slate-200 rounded-2xl p-3 text-sm font-semibold uppercase"></div>
-        <div><label class="block text-xs font-semibold text-slate-700 mb-1.5">Sampai Kode</label><input id="designZipEndCode" type="text" placeholder="RPC-050" autocomplete="off" class="w-full bg-slate-50 border border-slate-200 rounded-2xl p-3 text-sm font-semibold uppercase"></div>
+        <div><label class="block text-xs font-semibold text-slate-700 mb-1.5">Dari Kode</label><input id="designZipStartCode" type="text" placeholder="RSC-RTL-..." autocomplete="off" class="w-full bg-slate-50 border border-slate-200 rounded-2xl p-3 text-sm font-semibold uppercase"></div>
+        <div><label class="block text-xs font-semibold text-slate-700 mb-1.5">Sampai Kode</label><input id="designZipEndCode" type="text" placeholder="RSC-RTL-..." autocomplete="off" class="w-full bg-slate-50 border border-slate-200 rounded-2xl p-3 text-sm font-semibold uppercase"></div>
       </div>
 
       <div class="flex gap-2">
@@ -385,7 +385,7 @@
   <div id="batch-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-md z-50 flex items-center justify-center p-4 hidden">
     <div class="bg-white w-full max-w-md rounded-3xl p-6 sm:p-8 shadow-2xl animate-modal border border-slate-100 max-h-[90vh] overflow-y-auto">
       <h3 class="font-extrabold text-slate-900 text-lg mb-1">⚡ Generate Kartu Massal</h3>
-      <p class="text-xs text-slate-500 mb-6">Buat puluhan kode kartu sekaligus untuk dicetak.</p>
+      <p class="text-xs text-slate-500 mb-6">Buat puluhan kode kartu secara otomatis & acak unik.</p>
       
       <label class="block text-xs font-semibold text-slate-700 mb-1.5">Kategori Stok</label>
       <select id="batchCategory" class="w-full bg-slate-50 border border-slate-200 rounded-2xl p-3 mb-4 text-sm font-semibold text-slate-800 focus:outline-none focus:ring-2 focus:ring-emerald-500/20">
@@ -410,16 +410,16 @@
       <label class="block text-xs font-semibold text-slate-700 mb-1.5">Catatan Reseller / Batch (Opsional)</label>
       <input id="batchResellerNotes" type="text" placeholder="Contoh: Paket 50 Pcs Lunas Transfer" autocomplete="off" class="w-full bg-slate-50 border border-slate-200 rounded-2xl p-3 mb-4 text-sm">
 
-      <label class="block text-xs font-semibold text-slate-700 mb-1.5">Prefix Kode</label>
-      <input id="batchPrefix" type="text" placeholder="Contoh: RPC- atau RSL-" autocomplete="off" class="w-full bg-slate-50 border border-slate-200 rounded-2xl p-3 mb-4 text-sm font-semibold uppercase">
+      <label class="block text-xs font-semibold text-slate-700 mb-1.5">Prefix Custom (Kosongkan untuk Otomatis RSC-[CAT]-XXXXX)</label>
+      <input id="batchPrefix" type="text" placeholder="Otomatis acak jika dikosongkan" autocomplete="off" class="w-full bg-slate-50 border border-slate-200 rounded-2xl p-3 mb-4 text-sm font-semibold uppercase">
       
       <div class="grid grid-cols-2 gap-3 mb-4">
         <div>
-          <label class="block text-xs font-semibold text-slate-700 mb-1.5">Angka Awal</label>
-          <input id="batchStart" type="number" placeholder="1" autocomplete="off" class="w-full bg-slate-50 border border-slate-200 rounded-2xl p-3 text-sm">
+          <label class="block text-xs font-semibold text-slate-700 mb-1.5">Angka Awal (Hanya jika custom)</label>
+          <input id="batchStart" type="number" placeholder="Otomatis" autocomplete="off" class="w-full bg-slate-50 border border-slate-200 rounded-2xl p-3 text-sm">
         </div>
         <div>
-          <label class="block text-xs font-semibold text-slate-700 mb-1.5">Jumlah</label>
+          <label class="block text-xs font-semibold text-slate-700 mb-1.5">Jumlah Kartu</label>
           <input id="batchCount" type="number" placeholder="10" autocomplete="off" class="w-full bg-slate-50 border border-slate-200 rounded-2xl p-3 text-sm">
         </div>
       </div>
@@ -443,7 +443,7 @@
       <p id="modalFormSub" class="text-xs text-slate-500 mb-4"></p>
       
       <label class="block text-xs font-semibold text-slate-700 mb-1.5">Kategori Stok</label>
-      <select id="formCategory" class="w-full bg-slate-50 border border-slate-200 rounded-2xl p-3 mb-4 text-sm font-semibold text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500/20">
+      <select id="formCategory" onchange="autoGenerateSingleCode('RSC')" class="w-full bg-slate-50 border border-slate-200 rounded-2xl p-3 mb-4 text-sm font-semibold text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500/20">
         <option value="Retail Local">🏪 Retail Local (Door-to-Door)</option>
         <option value="Reseller Lynk.id">🔗 Reseller (Lynk.id)</option>
         <option value="TikTok Shop">🎵 TikTok Shop</option>
@@ -466,7 +466,12 @@
       <input id="formResellerNotes" type="text" autocomplete="off" placeholder="Contoh: Pembayaran Lunas" class="w-full bg-slate-50 border border-slate-200 rounded-2xl p-3 mb-4 text-sm">
 
       <label class="block text-xs font-semibold text-slate-700 mb-1.5">Kode Kartu</label>
-      <input id="formCardCode" type="text" autocomplete="off" placeholder="Contoh: RPC-001" class="w-full bg-slate-50 border border-slate-200 rounded-2xl p-3 mb-4 text-sm font-semibold uppercase">
+      <div class="flex gap-2 mb-4">
+        <input id="formCardCode" type="text" autocomplete="off" placeholder="Contoh: RSC-RTL-8K3A9" class="w-full bg-slate-50 border border-slate-200 rounded-2xl p-3 text-sm font-semibold uppercase">
+        <button id="btnAcakKode" type="button" onclick="autoGenerateSingleCode('RSC')" class="bg-blue-100 hover:bg-blue-200 text-blue-700 font-bold px-4 py-3 rounded-2xl text-xs whitespace-nowrap transition-all">
+          🎲 Acak Kode
+        </button>
+      </div>
       
       <label class="block text-xs font-semibold text-slate-700 mb-1.5">Nama Bisnis</label>
       <input id="formBizName" type="text" autocomplete="off" placeholder="Kosongkan jika belum diisi klien" class="w-full bg-slate-50 border border-slate-200 rounded-2xl p-3 mb-4 text-sm">
@@ -564,6 +569,53 @@
     const SUPABASE_URL = 'https://lzudrzpcahjyeqdvkyto.supabase.co';
     const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imx6dWRyenBjYWhqeWVxZHZreXRvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTIyNDYyODcsImV4cCI6MjEwNzgyMjI4N30.nI_84CyPRp-sv6_VJvpUB1bk7XWN0NCtSotwztl_lEY';
     const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+    // MAPPING PREFIX KATEGORI STOK
+    const CATEGORY_PREFIX_MAP = {
+      'Retail Local': 'RTL',
+      'Reseller Lynk.id': 'RSL',
+      'TikTok Shop': 'TTS',
+      'Shopee': 'SHP',
+      'Demo Sample': 'DMO'
+    };
+
+    /**
+     * Generator Kode Random Unik Anti-Bentrok
+     */
+    function generateRandomUniqueCode(basePrefix, categoryName, existingData) {
+      const catPrefix = CATEGORY_PREFIX_MAP[categoryName] || 'GEN';
+      const chars = '23456789ABCDEFGHJKLMNPQRSTUVWXYZ';
+      
+      const existingSet = new Set(
+        Array.isArray(existingData) 
+          ? existingData.map(c => typeof c === 'string' ? c.toUpperCase() : (c.card_code ? c.card_code.toUpperCase() : '')) 
+          : existingData
+      );
+
+      let newCode = '';
+      let isUnique = false;
+
+      while (!isUnique) {
+        let randomStr = '';
+        for (let i = 0; i < 5; i++) {
+          randomStr += chars.charAt(Math.floor(Math.random() * chars.length));
+        }
+        newCode = `${basePrefix}-${catPrefix}-${randomStr}`;
+        
+        if (!existingSet.has(newCode)) {
+          isUnique = true;
+          existingSet.add(newCode);
+        }
+      }
+
+      return newCode;
+    }
+
+    function autoGenerateSingleCode(basePrefix = 'RSC') {
+      const category = document.getElementById('formCategory').value;
+      const uniqueCode = generateRandomUniqueCode(basePrefix, category, allCardsData);
+      document.getElementById('formCardCode').value = uniqueCode;
+    }
 
     let allCardsData = [];
     let currentFilteredCards = [];
@@ -1642,17 +1694,27 @@
       const defaultPin = document.getElementById('batchPin').value.trim() || null;
       const enableRouting = document.getElementById('batchEnableRouting').checked;
 
-      if (!prefix || isNaN(startNum) || isNaN(count) || count <= 0) {
-        showNotification('Perhatian', 'Mohon isi Prefix, Angka Awal, dan Jumlah kartu dengan benar.', 'info');
+      if (isNaN(count) || count <= 0) {
+        showNotification('Perhatian', 'Mohon isi Jumlah kartu dengan benar.', 'info');
         return;
       }
       if (count > 200) { showNotification('Batas Maksimal', 'Maksimal 200 kartu sekali generate!', 'info'); return; }
       
       setButtonLoading('batchSubmitBtn', true, 'Proses Massal');
+
+      const existingSet = new Set(allCardsData.map(c => c.card_code.toUpperCase()));
       const batchPayload = [];
+
       for (let i = 0; i < count; i++) {
+        let cardCode = '';
+        if (prefix && !isNaN(startNum)) {
+          cardCode = `${prefix}${String(startNum + i).padStart(3, '0')}`;
+        } else {
+          cardCode = generateRandomUniqueCode('RSC', category, existingSet);
+        }
+
         batchPayload.push({ 
-          card_code: `${prefix}${String(startNum + i).padStart(3, '0')}`, 
+          card_code: cardCode, 
           category: category,
           reseller_id: resellerId,
           reseller_notes: resellerNotes,
@@ -1661,10 +1723,12 @@
           enable_routing: enableRouting 
         });
       }
+
       const { error } = await supabaseClient.from('cards').upsert(batchPayload, { onConflict: 'card_code' });
       setButtonLoading('batchSubmitBtn', false, 'Proses Massal');
+
       if (!error) { 
-        showNotification('Berhasil', `Berhasil membuat ${count} kartu!`, 'success', () => {
+        showNotification('Berhasil', `Berhasil membuat ${count} kartu Google Review!`, 'success', () => {
           closeBatchModal(); 
           fetchCards();
         });
@@ -1680,9 +1744,13 @@
       document.getElementById('formCategory').value = 'Retail Local';
       document.getElementById('formResellerId').value = '';
       document.getElementById('formResellerNotes').value = '';
+      
+      autoGenerateSingleCode('RSC');
+
       const codeInput = document.getElementById('formCardCode');
-      codeInput.value = '';
       codeInput.disabled = false;
+      document.getElementById('btnAcakKode').classList.remove('hidden');
+
       document.getElementById('formBizName').value = '';
       document.getElementById('formReviewUrl').value = '';
       document.getElementById('formOwnerPhone').value = '';
@@ -1698,14 +1766,17 @@
       document.getElementById('formCategory').value = card.category || 'Retail Local';
       document.getElementById('formResellerId').value = card.reseller_id || '';
       document.getElementById('formResellerNotes').value = card.reseller_notes || '';
+      
       const codeInput = document.getElementById('formCardCode');
       codeInput.value = card.card_code;
       if (card.is_activated) {
         codeInput.disabled = true;
+        document.getElementById('btnAcakKode').classList.add('hidden');
         document.getElementById('modalFormTitle').innerText = `Edit Kartu Aktif (${code})`;
         document.getElementById('modalFormSub').innerText = "🔒 Kode dikunci karena sudah aktif.";
       } else {
         codeInput.disabled = false;
+        document.getElementById('btnAcakKode').classList.remove('hidden');
         document.getElementById('modalFormTitle').innerText = `Edit Kartu Blank (${code})`;
         document.getElementById('modalFormSub').innerText = "✏️ Ubah kode kartu blank.";
       }
