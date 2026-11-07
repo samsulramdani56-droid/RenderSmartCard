@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="id" class="h-full">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Smart Business Card - Node Core</title>
+  <meta name="robots" content="noindex, nofollow, noarchive">
+  
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+  <style>
+    @keyframes modalFadeIn {
+      from { opacity: 0; transform: scale(0.95) translateY(10px); }
+      to { opacity: 1; transform: scale(1) translateY(0); }
+    }
+    .animate-modal { animation: modalFadeIn 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: #f1f5f9; }
+    ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 9999px; }
+  </style>
+</head>
+<body class="bg-gradient-to-br from-slate-900 via-slate-800 to-emerald-950 min-h-full font-sans text-slate-100 antialiased selection:bg-emerald-500 selection:text-white">
+
+  <!-- LOGIN CONTAINER -->
+  <div id="login-section" class="min-h-screen flex items-center justify-center p-4">
+    <div class="bg-slate-800/90 backdrop-blur-xl w-full max-w-sm rounded-3xl p-6 sm:p-8 shadow-2xl border border-slate-700/60 animate-modal text-center">
+      <div class="bg-gradient-to-tr from-emerald-500 to-teal-700 text-white font-bold rounded-2xl w-14 h-14 mx-auto flex items-center justify-center shadow-lg text-xl tracking-wider mb-4">💼</div>
+      <h2 class="font-extrabold text-white text-xl tracking-tight mb-1">Business Card Admin</h2>
+      <p class="text-xs text-slate-400 mb-6">Masuk ke gateway pengelolaan kartu smart business.</p>
+      
+      <div class="text-left mb-3">
+        <label class="block text-xs font-semibold text-slate-300 mb-1.5">Email Admin</label>
+        <input id="adminEmailInput" type="email" autocomplete="email" placeholder="admin@domain.com" class="w-full bg-slate-900/80 border border-slate-700 rounded-2xl p-3 text-sm font-semibold text-white focus:outline-none focus:ring-2 focus:ring-emerald-500/30 focus:border-emerald-500 transition-all">
+      </div>
+
+      <div class="text-left mb-6">
+        <label class="block text-xs font-semibold text-slate-300 mb-1.5">Password</label>
+        <input id="adminPasswordInput" type="password" autocomplete="current-password" placeholder="••••••••" class="w-full bg-slate-900/80 border border-slate-700 rounded-2xl p-3 text-sm font-semibold text-white focus:outline-none focus:ring-2 focus:ring-emerald-500/30 focus:border-emerald-500 transition-all" onkeypress="if(event.key === 'Enter') handleAdminLogin()">
+      </div>
+      
+      <button id="loginBtn" onclick="handleAdminLogin()" class="w-full bg-emerald-600 hover:bg-emerald-500 active:scale-[0.99] text-white font-semibold py-3.5 px-4 rounded-2xl shadow-lg shadow-emerald-900/40 transition-all text-sm">
+        Sign In to Node
+      </button>
+    </div>
+  </div>
+
+  <!-- DASHBOARD CONTAINER -->
+  <div id="dashboard-section" class="hidden min-h-screen p-4 sm:p-6 md:p-8 max-w-7xl mx-auto flex flex-col justify-between">
+    <div>
+      <header class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8 bg-slate-800/80 backdrop-blur-md p-4 sm:p-6 rounded-3xl border border-slate-700/60 shadow-lg">
+        <div class="flex items-center gap-3">
+          <div class="bg-gradient-to-tr from-emerald-500 to-teal-600 text-white font-bold rounded-2xl w-11 h-11 flex items-center justify-center shadow-md text-lg">B</div>
+          <div>
+            <h1 class="text-xl font-extrabold text-white tracking-tight">Render Smart Business Control</h1>
+            <p class="text-xs text-slate-400">Manajemen kartu profil usaha, loyalty stamp, katalog menu, & cetak QR/NFC.</p>
+          </div>
+        </div>
+        <div class="flex items-center gap-2">
+          <button onclick="logoutAdmin()" class="bg-slate-700 hover:bg-slate-600 text-slate-200 text-xs font-semibold px-4 py-2.5 rounded-xl transition-all">
+            Sign Out
+          </button>
+        </div>
+      </header>
+
+      <!-- STATISTIK -->
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
+        <div class="bg-slate-800/80 backdrop-blur-xl p-5 rounded-3xl border border-slate-700/60 shadow-sm">
+          <p class="text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-1">Total Kartu Business</p>
+          <h2 id="statTotal" class="text-3xl font-extrabold text-white tracking-tight">0</h2>
+        </div>
+        <div class="bg-slate-800/80 backdrop-blur-xl p-5 rounded-3xl border border-slate-700/60 shadow-sm">
+          <p class="text-[11px] font-bold text-emerald-400 uppercase tracking-wider mb-1">Kartu Aktif (Ber-profil)</p>
+          <h2 id="statActive" class="text-3xl font-extrabold text-emerald-400 tracking-tight">0</h2>
+        </div>
+        <div class="bg-slate-800/80 backdrop-blur-xl p-5 rounded-3xl border border-slate-700/60 shadow-sm">
+          <p class="text-[11px] font-bold text-amber-400 uppercase tracking-wider mb-1">Kartu Blank (Belum Aktif)</p>
+          <h2 id="statInactive" class="text-3xl font-extrabold text-amber-400 tracking-tight">0</h2>
+        </div>
+      </div>
+
+      <!-- KONTROL & FILTER -->
+      <div class="bg-slate-800/80 backdrop-blur-xl rounded-3xl p-5 sm:p-6 shadow-xl border border-slate-700/60 mb-8">
+        <div class="flex flex-col lg:flex-row justify-between items-stretch lg:items-center gap-4 mb-6">
+          <div class="flex flex-col sm:flex-row gap-3 w-full lg:w-auto">
+            <input id="searchInput" type="text" oninput="filterCards()" placeholder="Cari Kode / Nama Bisnis / Pemilik..." autocomplete="off" class="bg-slate-900 border border-slate-700 rounded-2xl px-4 py-2.5 text-sm w-full sm:w-64 text-white focus:outline-none focus:ring-2 focus:ring-emerald-500/30 transition-all">
+            
+            <select id="categoryFilter" onchange="filterCards()" class="bg-slate-900 border border-slate-700 rounded-2xl px-4 py-2.5 text-sm font-semibold text-slate-200 focus:outline-none focus:ring-2 focus:ring-emerald-500/30 transition-all">
+              <option value="all">📁 Semua Kategori</option>
+              <option value="Retail Local">🏪 Retail Local</option>
+              <option value="Reseller Lynk.id">🔗 Reseller Lynk.id</option>
+              <option value="TikTok Shop">🎵 TikTok Shop</option>
+              <option value="Shopee">🟠 Shopee</option>
+              <option value="Demo Sample">🧪 Demo Sample</option>
+            </select>
+
+            <div class="bg-slate-900 p-1 rounded-2xl flex gap-1 text-xs font-semibold">
+              <button id="filter-all" onclick="setFilterStatus('all')" class="flex-1 px-3 py-1.5 rounded-xl bg-slate-700 text-white transition-all font-bold">Semua</button>
+              <button id="filter-active" onclick="setFilterStatus('active')" class="flex-1 px-3 py-1.5 rounded-xl text-slate-400 hover:text-white transition-all">Aktif</button>
+              <button id="filter-inactive" onclick="setFilterStatus('inactive')" class="flex-1 px-3 py-1.5 rounded-xl text-slate-400 hover:text-white transition-all">Blank</button>
+            </div>
+          </div>
+          
+          <div class="flex flex-wrap gap-2">
+            <button onclick="openBatchModal()" class="bg-emerald-600 hover:bg-emerald-500 text-white font-semibold px-4 py-2.5 rounded-2xl text-xs transition-all shadow-md">
+              ⚡ Generate Massal
+            </button>
+            <button onclick="openAddModal()" class="bg-teal-600 hover:bg-teal-500 text-white font-semibold px-4 py-2.5 rounded-2xl text-xs transition-all shadow-md">
+              + Tambah Single
+            </button>
+          </div>
+        </div>
+
+        <div class="overflow-x-auto rounded-2xl border border-slate-700/50">
+          <table class="w-full text-left text-sm">
+            <thead>
+              <tr class="bg-slate-900/80 border-b border-slate-700 text-[11px] text-slate-400 font-bold uppercase tracking-wider">
+                <th class="py-3.5 px-4">Kode Kartu</th>
+                <th class="py-3.5 px-4">Kategori & Reseller</th>
+                <th class="py-3.5 px-4">Nama Usaha & Owner</th>
+                <th class="py-3.5 px-4">Wi-Fi & Review</th>
+                <th class="py-3.5 px-4">Loyalty Stamp</th>
+                <th class="py-3.5 px-4">Status</th>
+                <th class="py-3.5 px-4">PIN</th>
+                <th class="py-3.5 px-4 text-right">Aksi</th>
+              </tr>
+            </thead>
+            <tbody id="cardsTableBody" class="divide-y divide-slate-700/40 bg-slate-800/40"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <footer class="py-4 text-center text-xs text-slate-500 font-medium">
+      © 2026 Render Smart Card - Business Edition Node.
+    </footer>
+  </div>
+
+  <!-- MODAL EDIT DATA PROFIL KARTU BUSINESS -->
+  <div id="card-modal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-md z-50 flex items-center justify-center p-4 hidden">
+    <div class="bg-slate-800 border border-slate-700 w-full max-w-2xl rounded-3xl p-6 sm:p-8 shadow-2xl animate-modal max-h-[90vh] overflow-y-auto">
+      <h3 id="modalFormTitle" class="font-extrabold text-white text-lg mb-1">Kelola Kartu Business</h3>
+      <p id="modalFormSub" class="text-xs text-slate-400 mb-6"></p>
+      
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+        <div>
+          <label class="block text-xs font-semibold text-slate-300 mb-1.5">Kategori Stok</label>
+          <select id="formCategory" onchange="autoGenerateSingleCode('RSCB')" class="w-full bg-slate-900 border border-slate-700 rounded-2xl p-3 text-sm font-semibold text-white">
+            <option value="Retail Local">🏪 Retail Local</option>
+            <option value="Reseller Lynk.id">🔗 Reseller Lynk.id</option>
+            <option value="TikTok Shop">🎵 TikTok Shop</option>
+            <option value="Shopee">🟠 Shopee</option>
+            <option value="Demo Sample">🧪 Demo Sample</option>
+          </select>
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-slate-300 mb-1.5">Kode Kartu</label>
+          <div class="flex gap-2">
+            <input id="formCardCode" type="text" class="w-full bg-slate-900 border border-slate-700 rounded-2xl p-3 text-sm font-semibold text-white uppercase">
+            <button id="btnAcakKode" type="button" onclick="autoGenerateSingleCode('RSCB')" class="bg-emerald-600/30 hover:bg-emerald-600/50 text-emerald-400 font-bold px-3 py-2 rounded-2xl text-xs whitespace-nowrap">🎲 Acak</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- KELOMPOK PROFIL UTAMA -->
+      <div class="border-t border-slate-700/60 pt-4 mb-4">
+        <h4 class="text-xs font-bold text-emerald-400 uppercase tracking-wider mb-3">1. Profil & Sampel Bisnis</h4>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-3">
+          <input id="formBizName" type="text" placeholder="Nama Bisnis / Toko" class="bg-slate-900 border border-slate-700 rounded-2xl p-3 text-sm text-white">
+          <input id="formOwnerName" type="text" placeholder="Nama Pemilik / Jabatan" class="bg-slate-900 border border-slate-700 rounded-2xl p-3 text-sm text-white">
+        </div>
+        <textarea id="formBio" rows="2" placeholder="Bio Deskripsi Bisnis..." class="w-full bg-slate-900 border border-slate-700 rounded-2xl p-3 text-sm text-white mb-3"></textarea>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <input id="formProfilePic" type="text" placeholder="URL Foto Profil (Image Link)" class="bg-slate-900 border border-slate-700 rounded-2xl p-3 text-sm text-white">
+          <input id="formCoverPic" type="text" placeholder="URL Foto Sampel Banner" class="bg-slate-900 border border-slate-700 rounded-2xl p-3 text-sm text-white">
+        </div>
+      </div>
+
+      <!-- KELOMPOK FITUR ACTION (GOOGLE REVIEW, WI-FI, STAMP) -->
+      <div class="border-t border-slate-700/60 pt-4 mb-4">
+        <h4 class="text-xs font-bold text-emerald-400 uppercase tracking-wider mb-3">2. Google Review, Wi-Fi & Loyalty Stamp</h4>
+        <input id="formReviewUrl" type="text" placeholder="Link Google Review / Place ID" class="w-full bg-slate-900 border border-slate-700 rounded-2xl p-3 text-sm text-white mb-3">
+        
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-3">
+          <input id="formWifiSsid" type="text" placeholder="Wi-Fi SSID (Nama Wi-Fi)" class="bg-slate-900 border border-slate-700 rounded-2xl p-3 text-sm text-white">
+          <input id="formWifiPass" type="text" placeholder="Wi-Fi Password" class="bg-slate-900 border border-slate-700 rounded-2xl p-3 text-sm text-white">
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+          <input id="formStampTitle" type="text" placeholder="Judul Stamp (e.g. Card Member)" class="bg-slate-900 border border-slate-700 rounded-2xl p-3 text-sm text-white">
+          <input id="formStampTarget" type="number" placeholder="Target Stamp (e.g. 10)" class="bg-slate-900 border border-slate-700 rounded-2xl p-3 text-sm text-white">
+          <input id="formStampReward" type="text" placeholder="Hadiah (e.g. Free Coffee)" class="bg-slate-900 border border-slate-700 rounded-2xl p-3 text-sm text-white">
+        </div>
+      </div>
+
+      <!-- KELOMPOK SOCIAL MEDIA -->
+      <div class="border-t border-slate-700/60 pt-4 mb-6">
+        <h4 class="text-xs font-bold text-emerald-400 uppercase tracking-wider mb-3">3. Link Media Sosial</h4>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-3">
+          <input id="formIg" type="text" placeholder="Instagram (Username / Link)" class="bg-slate-900 border border-slate-700 rounded-2xl p-2.5 text-xs text-white">
+          <input id="formTiktok" type="text" placeholder="TikTok (Username / Link)" class="bg-slate-900 border border-slate-700 rounded-2xl p-2.5 text-xs text-white">
+          <input id="formYt" type="text" placeholder="YouTube Channel Link" class="bg-slate-900 border border-slate-700 rounded-2xl p-2.5 text-xs text-white">
+          <input id="formTw" type="text" placeholder="Twitter / X Link" class="bg-slate-900 border border-slate-700 rounded-2xl p-2.5 text-xs text-white">
+          <input id="formFb" type="text" placeholder="Facebook Link" class="bg-slate-900 border border-slate-700 rounded-2xl p-2.5 text-xs text-white">
+          <input id="formWa" type="text" placeholder="WhatsApp (Nomor 628...)" class="bg-slate-900 border border-slate-700 rounded-2xl p-2.5 text-xs text-white">
+        </div>
+      </div>
+
+      <div class="flex gap-2">
+        <button onclick="closeModal()" class="w-1/2 bg-slate-700 hover:bg-slate-600 text-slate-200 font-semibold py-3 rounded-2xl text-sm">Batal</button>
+        <button id="saveCardBtn" onclick="saveCardData()" class="w-1/2 bg-emerald-600 hover:bg-emerald-500 text-white font-semibold py-3 rounded-2xl text-sm shadow-md">Simpan Profil Business</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL BATCH GENERATE -->
+  <div id="batch-modal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-md z-50 flex items-center justify-center p-4 hidden">
+    <div class="bg-slate-800 border border-slate-700 w-full max-w-md rounded-3xl p-6 sm:p-8 shadow-2xl animate-modal">
+      <h3 class="font-extrabold text-white text-lg mb-1">⚡ Generate Massal Kartu Business</h3>
+      <p class="text-xs text-slate-400 mb-6">Buat puluhan kartu blank otomatis dengan pola kode acak unik RSCB-PREFIX-XXXXX.</p>
+      
+      <label class="block text-xs font-semibold text-slate-300 mb-1.5">Kategori Stok</label>
+      <select id="batchCategory" class="w-full bg-slate-900 border border-slate-700 rounded-2xl p-3 mb-4 text-sm font-semibold text-white">
+        <option value="Retail Local">🏪 Retail Local</option>
+        <option value="Reseller Lynk.id">🔗 Reseller Lynk.id</option>
+        <option value="TikTok Shop">🎵 TikTok Shop</option>
+        <option value="Shopee">🟠 Shopee</option>
+        <option value="Demo Sample">🧪 Demo Sample</option>
+      </select>
+
+      <div class="grid grid-cols-2 gap-3 mb-4">
+        <div>
+          <label class="block text-xs font-semibold text-slate-300 mb-1.5">Reseller ID</label>
+          <input id="batchResellerId" type="text" placeholder="RSL-01" class="w-full bg-slate-900 border border-slate-700 rounded-2xl p-3 text-sm text-white">
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-slate-300 mb-1.5">PIN Default</label>
+          <input id="batchPin" type="password" maxlength="4" placeholder="••••" class="w-full bg-slate-900 border border-slate-700 rounded-2xl p-3 text-sm text-white">
+        </div>
+      </div>
+
+      <label class="block text-xs font-semibold text-slate-300 mb-1.5">Jumlah Kartu</label>
+      <input id="batchCount" type="number" placeholder="10" class="w-full bg-slate-900 border border-slate-700 rounded-2xl p-3 mb-6 text-sm text-white">
+
+      <div class="flex gap-2">
+        <button onclick="closeBatchModal()" class="w-1/2 bg-slate-700 text-slate-200 font-semibold py-3 rounded-2xl text-sm">Batal</button>
+        <button id="batchSubmitBtn" onclick="submitBatchGenerate()" class="w-1/2 bg-emerald-600 hover:bg-emerald-500 text-white font-semibold py-3 rounded-2xl text-sm shadow-md">Proses Massal</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const DOMAIN_BASE = window.location.origin;
+    const SUPABASE_URL = 'https://lzudrzpcahjyeqdvkyto.supabase.co';
+    const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imx6dWRyenBjYWhqeWVxZHZreXRvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTIyNDYyODcsImV4cCI6MjEwNzgyMjI4N30.nI_84CyPRp-sv6_VJvpUB1bk7XWN0NCtSotwztl_lEY';
+    const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+    const CATEGORY_PREFIX_MAP = {
+      'Retail Local': 'RTL',
+      'Reseller Lynk.id': 'RSL',
+      'TikTok Shop': 'TTS',
+      'Shopee': 'SHP',
+      'Demo Sample': 'DMO'
+    };
+
+    let allCardsData = [];
+    let currentFilteredCards = [];
+    let currentFilter = 'all';
+    let editingOriginalCode = null;
+
+    window.addEventListener('DOMContentLoaded', async () => {
+      const { data: { session } } = await supabaseClient.auth.getSession();
+      if (session) {
+        document.getElementById('login-section').classList.add('hidden');
+        document.getElementById('dashboard-section').classList.remove('hidden');
+        fetchCards();
+      }
+    });
+
+    async function handleAdminLogin() {
+      const email = document.getElementById('adminEmailInput').value.trim();
+      const password = document.getElementById('adminPasswordInput').value.trim();
+      if (!email || !password) return alert('Email dan Password wajib diisi');
+
+      const { data, error } = await supabaseClient.auth.signInWithPassword({ email, password });
+      if (error) alert(error.message);
+      else if (data.session) {
+        document.getElementById('login-section').classList.add('hidden');
+        document.getElementById('dashboard-section').classList.remove('hidden');
+        fetchCards();
+      }
+    }
+
+    async function logoutAdmin() {
+      await supabaseClient.auth.signOut();
+      document.getElementById('dashboard-section').classList.add('hidden');
+      document.getElementById('login-section').classList.remove('hidden');
+    }
+
+    function generateRandomUniqueCode(basePrefix, categoryName, existingData) {
+      const catPrefix = CATEGORY_PREFIX_MAP[categoryName] || 'GEN';
+      const chars = '23456789ABCDEFGHJKLMNPQRSTUVWXYZ';
+      const existingSet = new Set(existingData.map(c => c.card_code ? c.card_code.toUpperCase() : ''));
+      let newCode = '', isUnique = false;
+      while (!isUnique) {
+        let randomStr = '';
+        for (let i = 0; i < 5; i++) randomStr += chars.charAt(Math.floor(Math.random() * chars.length));
+        newCode = `${basePrefix}-${catPrefix}-${randomStr}`;
+        if (!existingSet.has(newCode)) { isUnique = true; existingSet.add(newCode); }
+      }
+      return newCode;
+    }
+
+    function autoGenerateSingleCode(basePrefix = 'RSCB') {
+      const category = document.getElementById('formCategory').value;
+      document.getElementById('formCardCode').value = generateRandomUniqueCode(basePrefix, category, allCardsData);
+    }
+
+    async function fetchCards() {
+      const { data: cards, error } = await supabaseClient.from('business_cards').select('*').order('card_code', { ascending: true });
+      if (!error && cards) {
+        allCardsData = cards;
+        updateStats();
+        filterCards();
+      }
+    }
+
+    function updateStats() {
+      document.getElementById('statTotal').innerText = allCardsData.length;
+      const activeCount = allCardsData.filter(c => c.is_activated).length;
+      document.getElementById('statActive').innerText = activeCount;
+      document.getElementById('statInactive').innerText = allCardsData.length - activeCount;
+    }
+
+    function setFilterStatus(status) {
+      currentFilter = status;
+      filterCards();
+    }
+
+    function filterCards() {
+      const q = document.getElementById('searchInput').value.toLowerCase().trim();
+      const catFilter = document.getElementById('categoryFilter').value;
+
+      let filtered = allCardsData.filter(c => {
+        const matchQuery = c.card_code.toLowerCase().includes(q) || (c.business_name && c.business_name.toLowerCase().includes(q)) || (c.owner_name && c.owner_name.toLowerCase().includes(q));
+        const matchCat = (catFilter === 'all') || (c.category === catFilter);
+        return matchQuery && matchCat;
+      });
+
+      if (currentFilter === 'active') filtered = filtered.filter(c => c.is_activated);
+      else if (currentFilter === 'inactive') filtered = filtered.filter(c => !c.is_activated);
+
+      renderCardsTable(filtered);
+    }
+
+    function renderCardsTable(data) {
+      const tbody = document.getElementById('cardsTableBody');
+      tbody.innerHTML = '';
+      if (data.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="8" class="py-8 text-center text-slate-500">Belum ada data kartu smart business.</td></tr>`;
+        return;
+      }
+      data.forEach(c => {
+        const badge = c.is_activated ? `<span class="bg-emerald-500/20 text-emerald-400 px-2.5 py-1 rounded-full text-[11px] font-bold">🟢 Aktif</span>` : `<span class="bg-amber-500/20 text-amber-400 px-2.5 py-1 rounded-full text-[11px] font-bold">🟡 Blank</span>`;
+        tbody.innerHTML += `
+          <tr class="hover:bg-slate-700/30 transition-all text-xs">
+            <td class="py-3.5 px-4 font-bold text-white font-mono">${c.card_code}</td>
+            <td class="py-3.5 px-4 text-slate-300">${c.category || 'Retail Local'}</td>
+            <td class="py-3.5 px-4 font-semibold text-white">${c.business_name || '-'}<br><span class="text-[10px] text-slate-400 font-normal">${c.owner_name || ''}</span></td>
+            <td class="py-3.5 px-4 text-slate-300">📶 ${c.wifi_ssid || '-'}<br>🌟 ${c.google_review_url ? 'Ada' : '-'}</td>
+            <td class="py-3.5 px-4 text-slate-300">🎁 ${c.stamp_reward || '-'}</td>
+            <td class="py-3.5 px-4">${badge}</td>
+            <td class="py-3.5 px-4 font-mono text-slate-400">${c.pin || '-'}</td>
+            <td class="py-3.5 px-4 text-right">
+              <button onclick="openEditModal('${c.card_code}')" class="bg-emerald-600/30 text-emerald-400 hover:bg-emerald-600/50 px-2.5 py-1 rounded-lg font-bold mr-1">Edit Profil</button>
+              <button onclick="deleteCard('${c.card_code}')" class="bg-rose-600/30 text-rose-400 hover:bg-rose-600/50 px-2 py-1 rounded-lg font-bold">Hapus</button>
+            </td>
+          </tr>
+        `;
+      });
+    }
+
+    function openAddModal() {
+      editingOriginalCode = null;
+      document.getElementById('modalFormTitle').innerText = "Tambah Kartu Smart Business Baru";
+      autoGenerateSingleCode('RSCB');
+      document.getElementById('formBizName').value = '';
+      document.getElementById('formOwnerName').value = '';
+      document.getElementById('formBio').value = '';
+      document.getElementById('formProfilePic').value = '';
+      document.getElementById('formCoverPic').value = '';
+      document.getElementById('formReviewUrl').value = '';
+      document.getElementById('formWifiSsid').value = '';
+      document.getElementById('formWifiPass').value = '';
+      document.getElementById('formStampTitle').value = 'Kartu Stamp Hadiah';
+      document.getElementById('formStampTarget').value = '10';
+      document.getElementById('formStampReward').value = 'Gratis 1 Produk / Diskon Spesial';
+      document.getElementById('formIg').value = '';
+      document.getElementById('formTiktok').value = '';
+      document.getElementById('formYt').value = '';
+      document.getElementById('formTw').value = '';
+      document.getElementById('formFb').value = '';
+      document.getElementById('formWa').value = '';
+      document.getElementById('card-modal').classList.remove('hidden');
+    }
+
+    function openEditModal(code) {
+      const card = allCardsData.find(c => c.card_code === code);
+      if (!card) return;
+      editingOriginalCode = card.card_code;
+      document.getElementById('modalFormTitle').innerText = `Edit Profil Business (${code})`;
+      document.getElementById('formCategory').value = card.category || 'Retail Local';
+      document.getElementById('formCardCode').value = card.card_code;
+      document.getElementById('formBizName').value = card.business_name || '';
+      document.getElementById('formOwnerName').value = card.owner_name || '';
+      document.getElementById('formBio').value = card.bio || '';
+      document.getElementById('formProfilePic').value = card.profile_photo_url || '';
+      document.getElementById('formCoverPic').value = card.cover_photo_url || '';
+      document.getElementById('formReviewUrl').value = card.google_review_url || '';
+      document.getElementById('formWifiSsid').value = card.wifi_ssid || '';
+      document.getElementById('formWifiPass').value = card.wifi_password || '';
+      document.getElementById('formStampTitle').value = card.stamp_title || 'Kartu Stamp Hadiah';
+      document.getElementById('formStampTarget').value = card.stamp_target || 10;
+      document.getElementById('formStampReward').value = card.stamp_reward || '';
+      document.getElementById('formIg').value = card.social_instagram || '';
+      document.getElementById('formTiktok').value = card.social_tiktok || '';
+      document.getElementById('formYt').value = card.social_youtube || '';
+      document.getElementById('formTw').value = card.social_twitter || '';
+      document.getElementById('formFb').value = card.social_facebook || '';
+      document.getElementById('formWa').value = card.social_whatsapp || '';
+      document.getElementById('card-modal').classList.remove('hidden');
+    }
+
+    function closeModal() { document.getElementById('card-modal').classList.add('hidden'); }
+
+    async function saveCardData() {
+      const code = document.getElementById('formCardCode').value.trim().toUpperCase();
+      const bizName = document.getElementById('formBizName').value.trim();
+      if (!code) return alert('Kode Kartu Wajib diisi');
+
+      const payload = {
+        card_code: code,
+        category: document.getElementById('formCategory').value,
+        business_name: bizName || null,
+        owner_name: document.getElementById('formOwnerName').value.trim() || null,
+        bio: document.getElementById('formBio').value.trim() || null,
+        profile_photo_url: document.getElementById('formProfilePic').value.trim() || null,
+        cover_photo_url: document.getElementById('formCoverPic').value.trim() || null,
+        google_review_url: document.getElementById('formReviewUrl').value.trim() || null,
+        wifi_ssid: document.getElementById('formWifiSsid').value.trim() || null,
+        wifi_password: document.getElementById('formWifiPass').value.trim() || null,
+        stamp_title: document.getElementById('formStampTitle').value.trim() || 'Kartu Stamp Hadiah',
+        stamp_target: parseInt(document.getElementById('formStampTarget').value) || 10,
+        stamp_reward: document.getElementById('formStampReward').value.trim() || null,
+        social_instagram: document.getElementById('formIg').value.trim() || null,
+        social_tiktok: document.getElementById('formTiktok').value.trim() || null,
+        social_youtube: document.getElementById('formYt').value.trim() || null,
+        social_twitter: document.getElementById('formTw').value.trim() || null,
+        social_facebook: document.getElementById('formFb').value.trim() || null,
+        social_whatsapp: document.getElementById('formWa').value.trim() || null,
+        is_activated: bizName.length > 0
+      };
+
+      const { error } = await supabaseClient.from('business_cards').upsert(payload, { onConflict: 'card_code' });
+      if (!error) { closeModal(); fetchCards(); } else alert(error.message);
+    }
+
+    function openBatchModal() { document.getElementById('batch-modal').classList.remove('hidden'); }
+    function closeBatchModal() { document.getElementById('batch-modal').classList.add('hidden'); }
+
+    async function submitBatchGenerate() {
+      const count = parseInt(document.getElementById('batchCount').value);
+      const category = document.getElementById('batchCategory').value;
+      if (!count || count <= 0) return alert('Isi jumlah kartu');
+
+      const batchPayload = [];
+      for (let i = 0; i < count; i++) {
+        batchPayload.push({
+          card_code: generateRandomUniqueCode('RSCB', category, allCardsData),
+          category: category,
+          reseller_id: document.getElementById('batchResellerId').value.trim() || null,
+          pin: document.getElementById('batchPin').value.trim() || null,
+          is_activated: false
+        });
+      }
+
+      const { error } = await supabaseClient.from('business_cards').upsert(batchPayload, { onConflict: 'card_code' });
+      if (!error) { closeBatchModal(); fetchCards(); } else alert(error.message);
+    }
+
+    async function deleteCard(code) {
+      if (confirm(`Hapus kartu ${code}?`)) {
+        await supabaseClient.from('business_cards').delete().eq('card_code', code);
+        fetchCards();
+      }
+    }
+  </script>
+</body>
+</html>
