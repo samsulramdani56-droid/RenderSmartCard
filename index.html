@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Google Review Card</title>
+  <title>Mengarahkan ke Google Review...</title>
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
   <!-- Supabase JS SDK -->
@@ -23,7 +23,7 @@
     ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 9999px; }
   </style>
 </head>
-<body class="bg-gradient-to-br from-slate-50 via-slate-100 to-blue-50/30 min-h-full flex flex-col items-center justify-between p-4 sm:p-6 text-slate-800 antialiased selection:bg-blue-600 selection:text-white">
+<body class="bg-white sm:bg-gradient-to-br sm:from-slate-50 sm:via-slate-100 sm:to-blue-50/30 min-h-full flex flex-col items-center justify-between p-4 sm:p-6 text-slate-800 antialiased selection:bg-blue-600 selection:text-white">
 
   <!-- Header Website -->
   <header class="w-full max-w-md flex justify-between items-center py-3 px-1">
@@ -459,6 +459,17 @@
       document.getElementById('productmate-guide-modal').classList.add('hidden');
     }
 
+    function restoreAppUI() {
+      const header = document.querySelector('header');
+      const footer = document.querySelector('footer');
+      const main = document.getElementById('app-content');
+      if (header) header.classList.remove('hidden');
+      if (footer) footer.classList.remove('hidden');
+      if (main) {
+        main.className = 'w-full max-w-md bg-white/90 backdrop-blur-xl rounded-3xl p-6 sm:p-8 shadow-xl shadow-slate-200/50 border border-slate-200/60 my-auto transition-all';
+      }
+    }
+
     function resetSessionTimer() {
       if (sessionTimeoutTimer) clearTimeout(sessionTimeoutTimer);
       if (isAuthenticated) {
@@ -697,13 +708,12 @@
       if (cardCodeParam) {
         const cleanCode = cardCodeParam.trim().toUpperCase();
 
-        // MENAMPILKAN INDIKATOR LOADING MINIMALIS & BERSIH SAAT MENGHUBUNGKAN DATABASE
-        document.getElementById('app-content').innerHTML = `
-          <div class="flex flex-col items-center justify-center py-10 space-y-3">
-            <div class="w-8 h-8 border-3 border-blue-600/20 border-t-blue-600 rounded-full animate-spin"></div>
-            <p class="text-xs font-semibold text-slate-400 tracking-wide">Mengarahkan ke Google Review...</p>
-          </div>
-        `;
+        // OPSI 1: SEMBUNYIKAN UI TOTAL (BLANK) SAAT SCAN/TAP KARTU AKTIF
+        document.querySelector('header')?.classList.add('hidden');
+        document.querySelector('footer')?.classList.add('hidden');
+        document.getElementById('app-content').className = 'w-full max-w-md my-auto';
+        document.getElementById('app-content').innerHTML = ''; // Kosong tanpa spinner / teks
+        document.title = "Mengarahkan ke Google Review...";
 
         const { data: card, error } = await supabaseClient
           .from('cards')
@@ -712,6 +722,7 @@
           .maybeSingle();
 
         if (error) {
+          restoreAppUI();
           const t = translations[currentLang];
           showNotification(t.sysErrorTitle, t.failLoadData, 'error', () => window.renderHome());
           return;
@@ -720,27 +731,32 @@
         if (card) {
           if (card.is_activated) {
             if (card.enable_routing !== false) {
+              restoreAppUI();
               renderSmartRatingPage(card);
               return;
             }
             const reviewUrl = formatReviewUrl(card.google_review_url);
             if (reviewUrl) {
-              // SOLUSI 1: Direct Instant Redirect tanpa jeda atau visual berantakan
+              // SOLUSI 1: Instant Direct Redirect (Layar tetap blank)
               window.location.replace(reviewUrl);
               return;
             }
+            restoreAppUI();
             renderActiveCardStatus(card);
             return;
           } else {
+            restoreAppUI();
             renderActivationForm(card.card_code);
             return;
           }
         } else {
+          restoreAppUI();
           renderActivationForm(cleanCode);
           return;
         }
       }
       
+      restoreAppUI();
       window.renderHome();
     }
 
@@ -807,7 +823,8 @@
       if (starCount >= 4) {
         const reviewUrl = formatReviewUrl(decodeURIComponent(encodedReviewUrl));
         if (reviewUrl) {
-          // SOLUSI 1: Direct Instant Redirect setelah pilih bintang 4/5
+          // OPSI 1: Instant Direct Redirect saat bintang 4/5 dipilih
+          document.title = "Mengarahkan ke Google Review...";
           window.location.replace(reviewUrl);
         } else {
           showNotification(t.infoTitle, t.reviewUrlNotConfigured, 'info');
@@ -878,6 +895,7 @@
 
     window.renderHome = function() {
       isAuthenticated = false;
+      restoreAppUI();
       const t = translations[currentLang];
       document.getElementById('app-content').innerHTML = `
         <div class="mb-6">
@@ -946,6 +964,7 @@
 
     window.renderManage = function(defaultCode = '') {
       isAuthenticated = false;
+      restoreAppUI();
       const t = translations[currentLang];
       document.getElementById('app-content').innerHTML = `
         <div class="mb-6">
@@ -983,6 +1002,7 @@
 
     // FORM AKTIVASI KARTU
     function renderActivationForm(code) {
+      restoreAppUI();
       const t = translations[currentLang];
       document.getElementById('app-content').innerHTML = `
         <div class="mb-6">
@@ -1093,7 +1113,7 @@
           owner_phone: sanitizedPhone,
           pin: pin, 
           is_activated: true,
-          enable_routing: false // Diatur false agar tidak langsung aktif secara otomatis oleh user
+          enable_routing: false
         }, { onConflict: 'card_code' });
 
       setButtonLoading('activateCardBtn', false, t.activateBtn);
