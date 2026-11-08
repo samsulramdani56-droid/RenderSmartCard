@@ -717,7 +717,8 @@
             }
             const reviewUrl = formatReviewUrl(card.google_review_url);
             if (reviewUrl) {
-              window.location.href = reviewUrl;
+              // SOLUSI 1: Direct Instant Redirect tanpa perantara UI
+              window.location.replace(reviewUrl);
               return;
             }
             renderActiveCardStatus(card);
@@ -798,7 +799,8 @@
       if (starCount >= 4) {
         const reviewUrl = formatReviewUrl(decodeURIComponent(encodedReviewUrl));
         if (reviewUrl) {
-          window.location.href = reviewUrl;
+          // SOLUSI 1: Direct Instant Redirect setelah pilih bintang 4/5
+          window.location.replace(reviewUrl);
         } else {
           showNotification(t.infoTitle, t.reviewUrlNotConfigured, 'info');
         }
@@ -1257,7 +1259,6 @@
 
       setButtonLoading('saveChangesBtn', true, t.saveChangesBtn);
 
-      // Field enable_routing tidak disertakan dalam update agar tidak mengubah settingan routing yang diatur admin
       const { error } = await supabaseClient
         .from('cards')
         .update({ business_name: name, google_review_url: finalReviewUrl, owner_phone: sanitizedPhone, pin: finalPin })
