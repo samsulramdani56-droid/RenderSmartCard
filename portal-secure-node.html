@@ -66,7 +66,7 @@
           <div class="bg-gradient-to-tr from-blue-700 to-indigo-600 text-white font-bold rounded-2xl w-11 h-11 flex items-center justify-center shadow-md shadow-blue-500/20 text-lg">R</div>
           <div>
             <h1 class="text-xl font-extrabold text-slate-900 tracking-tight">System Node Control</h1>
-            <p class="text-xs text-slate-500">Manajemen database kartu, cetak QR massal, NFC Tool, & monitoring sistem.</p>
+            <p class="text-xs text-slate-500">Produksi stiker kartu universal, cetak massal, NFC Tool, & monitoring.</p>
           </div>
         </div>
         <div class="flex items-center gap-2">
@@ -79,24 +79,26 @@
         </div>
       </header>
 
+      <!-- STATISTIK RINGKAS -->
       <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
         <div class="bg-white/90 backdrop-blur-xl p-5 rounded-3xl border border-slate-200/60 shadow-sm">
-          <p class="text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-1">Total Kartu</p>
+          <p class="text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-1">Total Stok Kartu</p>
           <h2 id="statTotal" class="text-3xl font-extrabold text-slate-900 tracking-tight">0</h2>
         </div>
         <div class="bg-white/90 backdrop-blur-xl p-5 rounded-3xl border border-slate-200/60 shadow-sm">
-          <p class="text-[11px] font-bold text-emerald-600 uppercase tracking-wider mb-1">Kartu Aktif</p>
-          <h2 id="statActive" class="text-3xl font-extrabold text-emerald-600 tracking-tight">0</h2>
+          <p class="text-[11px] font-bold text-amber-600 uppercase tracking-wider mb-1">Stok Blank (Siap Pakai)</p>
+          <h2 id="statInactive" class="text-3xl font-extrabold text-amber-600 tracking-tight">0</h2>
         </div>
         <div class="bg-white/90 backdrop-blur-xl p-5 rounded-3xl border border-slate-200/60 shadow-sm">
-          <p class="text-[11px] font-bold text-amber-600 uppercase tracking-wider mb-1">Belum Aktif (Blank)</p>
-          <h2 id="statInactive" class="text-3xl font-extrabold text-amber-600 tracking-tight">0</h2>
+          <p class="text-[11px] font-bold text-emerald-600 uppercase tracking-wider mb-1">Sudah Aktif (Terjual)</p>
+          <h2 id="statActive" class="text-3xl font-extrabold text-emerald-600 tracking-tight">0</h2>
         </div>
       </div>
 
+      <!-- NAVIGASI TAB -->
       <div class="flex border-b border-slate-200/80 mb-6 gap-2 overflow-x-auto pb-1">
         <button id="tab-cards-btn" onclick="switchTab('cards')" class="px-4 py-2 text-xs sm:text-sm font-bold border-b-2 border-blue-600 text-blue-600 transition-all whitespace-nowrap">
-          🎴 Kelola Kartu (<span id="count-cards">0</span>)
+          🎴 Stok & Produksi Kartu (<span id="count-cards">0</span>)
         </button>
         <button id="tab-feedbacks-btn" onclick="switchTab('feedbacks')" class="px-4 py-2 text-xs sm:text-sm font-semibold border-b-2 border-transparent text-slate-500 hover:text-slate-800 transition-all whitespace-nowrap">
           💬 Laporan Feedback (<span id="count-feedbacks">0</span>)
@@ -106,50 +108,35 @@
         </button>
       </div>
 
-      <!-- TAB 1: KELOLA KARTU -->
+      <!-- TAB 1: KELOLA KARTU (SIMPLIFIED FOR PHYSICAL STICKER PRODUCTION) -->
       <section id="section-cards">
         <div class="bg-white/90 backdrop-blur-xl rounded-3xl p-5 sm:p-6 shadow-xl shadow-slate-200/50 border border-slate-200/60 mb-8">
-          <div class="flex flex-col lg:flex-row justify-between items-stretch lg:items-center gap-4 mb-6">
-            <div class="flex flex-col sm:flex-row gap-3 w-full lg:w-auto">
-              <input id="searchInput" type="text" oninput="filterCards()" placeholder="Cari Kode / Bisnis / WA / Reseller..." autocomplete="off" class="bg-slate-50 border border-slate-200 rounded-2xl px-4 py-2.5 text-sm w-full sm:w-64 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-600 transition-all">
+          <div class="flex flex-col lg:flex-row justify-between items-stretch lg:items-center gap-4 mb-5">
+            <!-- FILTER KIRI -->
+            <div class="flex flex-col sm:flex-row flex-wrap gap-2.5 w-full lg:w-auto">
+              <input id="searchInput" type="text" oninput="filterCards()" placeholder="Cari Kode / Bisnis / Batch / WA..." autocomplete="off" class="bg-slate-50 border border-slate-200 rounded-2xl px-4 py-2.5 text-sm w-full sm:w-64 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-600 transition-all">
               
-              <select id="categoryFilter" onchange="filterCards()" class="bg-slate-50 border border-slate-200 rounded-2xl px-4 py-2.5 text-sm font-semibold text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500/20 transition-all">
-                <option value="all">📁 Semua Kategori</option>
-                <option value="Retail Local">🏪 Retail Local</option>
-                <option value="Reseller Lynk.id">🔗 Reseller Lynk.id</option>
-                <option value="TikTok Shop">🎵 TikTok Shop</option>
-                <option value="Shopee">🟠 Shopee</option>
-                <option value="Demo Sample">🧪 Demo Sample</option>
-              </select>
-
-              <select id="routingFilter" onchange="filterCards()" class="bg-slate-50 border border-slate-200 rounded-2xl px-3 py-2.5 text-xs font-semibold text-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-500/20 transition-all">
-                <option value="all">⚡ All Routing</option>
-                <option value="on">🟢 Routing ON</option>
-                <option value="off">⚪ Routing OFF</option>
+              <select id="batchFilter" onchange="filterCards()" class="bg-slate-50 border border-slate-200 rounded-2xl px-3.5 py-2.5 text-xs font-semibold text-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-500/20 transition-all">
+                <option value="all">🏷️ Semua Batch Cetak</option>
               </select>
 
               <div class="bg-slate-100 p-1 rounded-2xl flex gap-1 text-xs font-semibold">
                 <button id="filter-all" onclick="setFilterStatus('all')" class="flex-1 px-3 py-1.5 rounded-xl bg-white text-slate-800 shadow-sm transition-all font-bold">Semua</button>
-                <button id="filter-active" onclick="setFilterStatus('active')" class="flex-1 px-3 py-1.5 rounded-xl text-slate-500 hover:text-slate-800 transition-all font-semibold">Aktif</button>
                 <button id="filter-inactive" onclick="setFilterStatus('inactive')" class="flex-1 px-3 py-1.5 rounded-xl text-slate-500 hover:text-slate-800 transition-all font-semibold">Blank</button>
+                <button id="filter-active" onclick="setFilterStatus('active')" class="flex-1 px-3 py-1.5 rounded-xl text-slate-500 hover:text-slate-800 transition-all font-semibold">Aktif</button>
               </div>
             </div>
             
+            <!-- AKSI UTAMA KANAN (2 TOMBOL INTI) -->
             <div class="flex flex-wrap gap-2">
-              <button onclick="openCsvFilterModal()" class="bg-slate-800 hover:bg-slate-900 text-white font-semibold px-4 py-2.5 rounded-2xl text-xs transition-all flex items-center justify-center gap-1.5 shadow-sm">
-                📥 Export CSV
+              <button onclick="selectAllBlankCards()" class="bg-amber-50 hover:bg-amber-100 text-amber-800 border border-amber-200 font-semibold px-3.5 py-2.5 rounded-2xl text-xs transition-all flex items-center justify-center gap-1.5">
+                ☑️ Pilih Semua Blank
               </button>
-              <button onclick="openZipFilterModal()" class="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold px-4 py-2.5 rounded-2xl text-xs transition-all flex items-center justify-center gap-1.5 shadow-md shadow-indigo-500/20">
-                📦 QR Mentahan (ZIP)
+              <button onclick="openExportCenterModal()" class="bg-slate-800 hover:bg-slate-900 text-white font-semibold px-4 py-2.5 rounded-2xl text-xs transition-all flex items-center justify-center gap-1.5 shadow-sm">
+                🖨️ Cetak & Export
               </button>
-              <button onclick="openCardDesignZipModal()" class="bg-purple-600 hover:bg-purple-700 text-white font-semibold px-4 py-2.5 rounded-2xl text-xs transition-all flex items-center justify-center gap-1.5 shadow-md shadow-purple-500/20">
-                🖼️ Desain Kartu (ZIP)
-              </button>
-              <button onclick="openBatchModal()" class="bg-emerald-600 hover:bg-emerald-700 text-white font-semibold px-4 py-2.5 rounded-2xl text-xs transition-all flex items-center justify-center gap-1.5 shadow-md shadow-emerald-500/20">
-                ⚡ Generate Massal
-              </button>
-              <button onclick="openAddModal()" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-4 py-2.5 rounded-2xl text-xs transition-all flex items-center justify-center gap-1.5 shadow-md shadow-blue-500/20">
-                + Tambah Single
+              <button onclick="openCreateModal()" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-4 py-2.5 rounded-2xl text-xs transition-all flex items-center justify-center gap-1.5 shadow-md shadow-blue-500/20">
+                + Buat Stok Kartu
               </button>
             </div>
           </div>
@@ -157,17 +144,15 @@
           <!-- TOOLBAR MASSAL PERSISTEN MULTI-HALAMAN -->
           <div id="bulkToolbar" class="hidden bg-blue-50 border border-blue-200 rounded-2xl p-3 mb-4 flex flex-wrap items-center justify-between gap-3 animate-modal">
             <div class="flex items-center gap-2 text-xs font-bold text-blue-900">
-              <span id="selectedCount" class="bg-blue-600 text-white px-2.5 py-0.5 rounded-lg font-mono">0</span> kartu terpilih (Multi-Halaman)
-              <button onclick="selectAllFilteredCards()" class="text-[11px] underline text-blue-700 hover:text-blue-900 ml-2 font-medium">Pilih Semua Result Filter</button>
-              <button onclick="clearCardSelection()" class="text-[11px] text-rose-600 hover:underline ml-1 font-medium">Kosongkan Seleksi</button>
+              <span id="selectedCount" class="bg-blue-600 text-white px-2.5 py-0.5 rounded-lg font-mono">0</span> kartu terpilih
+              <button onclick="selectAllFilteredCards()" class="text-[11px] underline text-blue-700 hover:text-blue-900 ml-2 font-medium">Pilih Semua Hasil Filter</button>
+              <button onclick="clearCardSelection()" class="text-[11px] text-rose-600 hover:underline ml-1 font-medium">Batal Pilih</button>
             </div>
             <div class="flex flex-wrap items-center gap-2">
-              <button onclick="bulkToggleRoutingSelected(true)" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-3 py-1.5 rounded-xl text-xs transition-all shadow-sm">ON Smart Routing</button>
-              <button onclick="bulkToggleRoutingSelected(false)" class="bg-slate-700 hover:bg-slate-800 text-white font-semibold px-3 py-1.5 rounded-xl text-xs transition-all shadow-sm">OFF Smart Routing</button>
-              <button onclick="bulkDownloadQrSelectedZip()" class="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold px-3 py-1.5 rounded-xl text-xs transition-all shadow-sm">📦 ZIP QR Terpilih</button>
-              <button onclick="bulkDownloadDesignSelectedZip()" class="bg-purple-600 hover:bg-purple-700 text-white font-semibold px-3 py-1.5 rounded-xl text-xs transition-all shadow-sm">🖼️ ZIP Desain Terpilih</button>
-              <button onclick="openPrintLayoutModal()" class="bg-amber-600 hover:bg-amber-700 text-white font-semibold px-3 py-1.5 rounded-xl text-xs transition-all shadow-sm">🖨️ Print / Cetak Layout</button>
-              <button onclick="bulkDeleteSelected()" class="bg-rose-600 hover:bg-rose-700 text-white font-semibold px-3 py-1.5 rounded-xl text-xs transition-all shadow-sm">🗑️ Hapus Terpilih</button>
+              <button onclick="openExportCenterModal('selected')" class="bg-amber-600 hover:bg-amber-700 text-white font-semibold px-3.5 py-1.5 rounded-xl text-xs transition-all shadow-sm">🖨️ Cetak / Export Terpilih</button>
+              <button onclick="bulkToggleRoutingSelected(true)" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-3 py-1.5 rounded-xl text-xs transition-all shadow-sm">ON Routing</button>
+              <button onclick="bulkToggleRoutingSelected(false)" class="bg-slate-700 hover:bg-slate-800 text-white font-semibold px-3 py-1.5 rounded-xl text-xs transition-all shadow-sm">OFF Routing</button>
+              <button onclick="bulkDeleteSelected()" class="bg-rose-600 hover:bg-rose-700 text-white font-semibold px-3 py-1.5 rounded-xl text-xs transition-all shadow-sm">🗑️ Hapus</button>
             </div>
           </div>
 
@@ -177,13 +162,12 @@
                 <tr class="bg-slate-50 border-b border-slate-100 text-[11px] text-slate-400 font-bold uppercase tracking-wider select-none">
                   <th class="py-3.5 px-4 w-10 text-center"><input type="checkbox" id="selectAllCardsPage" onclick="toggleSelectCurrentPageCards(this)" class="w-4 h-4 text-blue-600 rounded cursor-pointer" title="Centang Semua di Halaman Ini"></th>
                   <th class="py-3.5 px-4 cursor-pointer hover:text-slate-700" onclick="handleSortTable('card_code')">Kode Kartu <span id="sort-icon-card_code">↕</span></th>
-                  <th class="py-3.5 px-4 cursor-pointer hover:text-slate-700" onclick="handleSortTable('category')">Kategori & Reseller <span id="sort-icon-category">↕</span></th>
-                  <th class="py-3.5 px-4 cursor-pointer hover:text-slate-700" onclick="handleSortTable('business_name')">Nama Bisnis <span id="sort-icon-business_name">↕</span></th>
-                  <th class="py-3.5 px-4">WA Owner</th>
+                  <th class="py-3.5 px-4 cursor-pointer hover:text-slate-700" onclick="handleSortTable('reseller_notes')">Batch / Catatan <span id="sort-icon-reseller_notes">↕</span></th>
+                  <th class="py-3.5 px-4 cursor-pointer hover:text-slate-700" onclick="handleSortTable('business_name')">Bisnis & WA Owner <span id="sort-icon-business_name">↕</span></th>
                   <th class="py-3.5 px-4 cursor-pointer hover:text-slate-700" onclick="handleSortTable('is_activated')">Status <span id="sort-icon-is_activated">↕</span></th>
                   <th class="py-3.5 px-4 text-center">Smart Routing</th>
                   <th class="py-3.5 px-4">PIN</th>
-                  <th class="py-3.5 px-4 text-right">Aksi, NFC & Print</th>
+                  <th class="py-3.5 px-4 text-right">Aksi, QR & NFC</th>
                 </tr>
               </thead>
               <tbody id="cardsTableBody" class="divide-y divide-slate-100 bg-white"></tbody>
@@ -252,243 +236,135 @@
     </footer>
   </div>
 
-  <!-- MODAL PENGATURAN CETAK & LAYOUT (A4/A3/A3+ & PDF/ZIP) -->
-  <div id="print-layout-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-md z-50 flex items-center justify-center p-4 hidden">
-    <div class="bg-white w-full max-w-md rounded-3xl p-6 sm:p-8 shadow-2xl animate-modal border border-slate-100">
-      <h3 class="font-extrabold text-slate-900 text-lg mb-1">🖨️ Pengaturan Cetak & Layout</h3>
-      <p class="text-xs text-slate-500 mb-6">Pilih ukuran kertas cetak dan format file output yang diinginkan.</p>
-
-      <label class="block text-xs font-semibold text-slate-700 mb-1.5">Ukuran Kertas (Media Cetak)</label>
-      <select id="printPaperSize" class="w-full bg-slate-50 border border-slate-200 rounded-2xl p-3 mb-4 text-sm font-semibold text-slate-800 focus:outline-none focus:ring-2 focus:ring-amber-500/20">
-        <option value="27.5x46">📐 Area Maksimal Cetak Vendor (27.5 x 46 cm) - 8 Kartu / Lembar (2x4)</option>
-        <option value="A3+">📄 A3+ Standard (32.9 x 48.3 cm) - 12 Kartu / Lembar (3x4)</option>
-        <option value="A3">📄 A3 (29.7 x 42.0 cm) - 9 Kartu / Lembar (3x3)</option>
-        <option value="A4">📄 A4 (21.0 x 29.7 cm) - 4 Kartu / Lembar (2x2)</option>
-      </select>
-
-      <label class="block text-xs font-semibold text-slate-700 mb-1.5">Format File Output</label>
-      <select id="printOutputFormat" class="w-full bg-slate-50 border border-slate-200 rounded-2xl p-3 mb-6 text-sm font-semibold text-slate-800 focus:outline-none focus:ring-2 focus:ring-amber-500/20">
-        <option value="PDF">📕 File PDF Siap Cetak (Multi-Halaman)</option>
-        <option value="ZIP">📦 File ZIP Gambar PNG (Per Lembar)</option>
-      </select>
-
-      <div class="flex gap-2">
-        <button onclick="closePrintLayoutModal()" class="w-1/2 bg-slate-100 text-slate-600 font-semibold py-3 rounded-2xl text-sm">Batal</button>
-        <button onclick="processPrintLayoutDownload()" class="w-1/2 bg-amber-600 hover:bg-amber-700 text-white font-semibold py-3 rounded-2xl text-sm shadow-md transition-all">Generate & Cetak</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- MODAL EXPORT CSV -->
-  <div id="csv-filter-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-md z-50 flex items-center justify-center p-4 hidden">
-    <div class="bg-white w-full max-w-md rounded-3xl p-6 sm:p-8 shadow-2xl animate-modal border border-slate-100">
-      <h3 class="font-extrabold text-slate-900 text-lg mb-1">📥 Export CSV Data Kartu</h3>
-      <p class="text-xs text-slate-500 mb-6">Pilih export berdasarkan Kategori khusus atau Rentang Kode Kartu.</p>
-      
-      <label class="block text-xs font-semibold text-slate-700 mb-1.5">Berdasarkan Kategori</label>
-      <select id="csvCategorySelect" class="w-full bg-slate-50 border border-slate-200 rounded-2xl p-3 mb-4 text-sm font-semibold text-slate-800 focus:outline-none focus:ring-2 focus:ring-slate-500/20">
-        <option value="all">📁 Semua Kategori</option>
-        <option value="Reseller Lynk.id">🔗 Reseller Lynk.id</option>
-        <option value="Retail Local">🏪 Retail Local</option>
-        <option value="TikTok Shop">🎵 TikTok Shop</option>
-        <option value="Shopee">🟠 Shopee</option>
-        <option value="Demo Sample">🧪 Demo Sample</option>
-      </select>
-
-      <div class="relative flex py-2 items-center mb-3">
-        <div class="flex-grow border-t border-slate-200"></div>
-        <span class="flex-shrink mx-3 text-[10px] font-bold text-slate-400 uppercase tracking-wider">Atau Range Kode (Opsional)</span>
-        <div class="flex-grow border-t border-slate-200"></div>
-      </div>
-
-      <div class="grid grid-cols-2 gap-3 mb-6">
-        <div><label class="block text-xs font-semibold text-slate-700 mb-1.5">Dari Kode</label><input id="csvStartCode" type="text" placeholder="RSC-RTL-..." autocomplete="off" class="w-full bg-slate-50 border border-slate-200 rounded-2xl p-3 text-sm font-semibold uppercase"></div>
-        <div><label class="block text-xs font-semibold text-slate-700 mb-1.5">Sampai Kode</label><input id="csvEndCode" type="text" placeholder="RSC-RTL-..." autocomplete="off" class="w-full bg-slate-50 border border-slate-200 rounded-2xl p-3 text-sm font-semibold uppercase"></div>
-      </div>
-
-      <div class="flex gap-2">
-        <button onclick="closeCsvFilterModal()" class="w-1/2 bg-slate-100 text-slate-600 font-semibold py-3 rounded-2xl text-sm">Batal</button>
-        <button onclick="processFilteredCsvExport()" class="w-1/2 bg-slate-800 text-white font-semibold py-3 rounded-2xl text-sm shadow-md">Download CSV</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- MODAL DOWNLOAD QR MENTAHAN ZIP -->
-  <div id="zip-filter-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-md z-50 flex items-center justify-center p-4 hidden">
-    <div class="bg-white w-full max-w-md rounded-3xl p-6 sm:p-8 shadow-2xl animate-modal border border-slate-100">
-      <h3 class="font-extrabold text-slate-900 text-lg mb-1">📦 Download QR Mentahan (ZIP)</h3>
-      <p class="text-xs text-slate-500 mb-6">Unduh file mentahan QR code saja berdasarkan kategori atau range.</p>
-
-      <label class="block text-xs font-semibold text-slate-700 mb-1.5">Berdasarkan Kategori</label>
-      <select id="zipCategorySelect" class="w-full bg-slate-50 border border-slate-200 rounded-2xl p-3 mb-4 text-sm font-semibold text-slate-800 focus:outline-none focus:ring-2 focus:ring-indigo-500/20">
-        <option value="all">📁 Semua Kategori</option>
-        <option value="Reseller Lynk.id">🔗 Reseller Lynk.id</option>
-        <option value="Retail Local">🏪 Retail Local</option>
-        <option value="TikTok Shop">🎵 TikTok Shop</option>
-        <option value="Shopee">🟠 Shopee</option>
-        <option value="Demo Sample">🧪 Demo Sample</option>
-      </select>
-
-      <div class="relative flex py-2 items-center mb-3">
-        <div class="flex-grow border-t border-slate-200"></div>
-        <span class="flex-shrink mx-3 text-[10px] font-bold text-slate-400 uppercase tracking-wider">Atau Range Kode (Opsional)</span>
-        <div class="flex-grow border-t border-slate-200"></div>
-      </div>
-
-      <div class="grid grid-cols-2 gap-3 mb-6">
-        <div><label class="block text-xs font-semibold text-slate-700 mb-1.5">Dari Kode</label><input id="zipStartCode" type="text" placeholder="RSC-RTL-..." autocomplete="off" class="w-full bg-slate-50 border border-slate-200 rounded-2xl p-3 text-sm font-semibold uppercase"></div>
-        <div><label class="block text-xs font-semibold text-slate-700 mb-1.5">Sampai Kode</label><input id="zipEndCode" type="text" placeholder="RSC-RTL-..." autocomplete="off" class="w-full bg-slate-50 border border-slate-200 rounded-2xl p-3 text-sm font-semibold uppercase"></div>
-      </div>
-
-      <div class="flex gap-2">
-        <button onclick="closeZipFilterModal()" class="w-1/2 bg-slate-100 text-slate-600 font-semibold py-3 rounded-2xl text-sm">Batal</button>
-        <button onclick="processFilteredZipDownload()" class="w-1/2 bg-indigo-600 text-white font-semibold py-3 rounded-2xl text-sm shadow-md">Download ZIP QR</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- MODAL DOWNLOAD ZIP DESAIN KARTU LENGKAP -->
-  <div id="design-zip-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-md z-50 flex items-center justify-center p-4 hidden">
-    <div class="bg-white w-full max-w-md rounded-3xl p-6 sm:p-8 shadow-2xl animate-modal border border-slate-100">
-      <h3 class="font-extrabold text-slate-900 text-lg mb-1">🖼️ Download ZIP Desain Kartu Lengkap</h3>
-      <p class="text-xs text-slate-500 mb-6">Menggabungkan template background <code class="bg-slate-100 px-1 py-0.5 rounded font-mono text-purple-600">card-template.png</code> dengan QR code secara otomatis.</p>
-
-      <label class="block text-xs font-semibold text-slate-700 mb-1.5">Berdasarkan Kategori</label>
-      <select id="designZipCategorySelect" class="w-full bg-slate-50 border border-slate-200 rounded-2xl p-3 mb-4 text-sm font-semibold text-slate-800 focus:outline-none focus:ring-2 focus:ring-purple-500/20">
-        <option value="all">📁 Semua Kategori</option>
-        <option value="Reseller Lynk.id">🔗 Reseller Lynk.id</option>
-        <option value="Retail Local">🏪 Retail Local</option>
-        <option value="TikTok Shop">🎵 TikTok Shop</option>
-        <option value="Shopee">🟠 Shopee</option>
-        <option value="Demo Sample">🧪 Demo Sample</option>
-      </select>
-
-      <div class="relative flex py-2 items-center mb-3">
-        <div class="flex-grow border-t border-slate-200"></div>
-        <span class="flex-shrink mx-3 text-[10px] font-bold text-slate-400 uppercase tracking-wider">Atau Range Kode (Opsional)</span>
-        <div class="flex-grow border-t border-slate-200"></div>
-      </div>
-
-      <div class="grid grid-cols-2 gap-3 mb-6">
-        <div><label class="block text-xs font-semibold text-slate-700 mb-1.5">Dari Kode</label><input id="designZipStartCode" type="text" placeholder="RSC-RTL-..." autocomplete="off" class="w-full bg-slate-50 border border-slate-200 rounded-2xl p-3 text-sm font-semibold uppercase"></div>
-        <div><label class="block text-xs font-semibold text-slate-700 mb-1.5">Sampai Kode</label><input id="designZipEndCode" type="text" placeholder="RSC-RTL-..." autocomplete="off" class="w-full bg-slate-50 border border-slate-200 rounded-2xl p-3 text-sm font-semibold uppercase"></div>
-      </div>
-
-      <div class="flex gap-2">
-        <button onclick="closeCardDesignZipModal()" class="w-1/2 bg-slate-100 text-slate-600 font-semibold py-3 rounded-2xl text-sm">Batal</button>
-        <button onclick="processCardDesignZipDownload()" class="w-1/2 bg-purple-600 text-white font-semibold py-3 rounded-2xl text-sm shadow-md">Download ZIP Desain</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- MODAL GENERATE KARTU MASSAL -->
-  <div id="batch-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-md z-50 flex items-center justify-center p-4 hidden">
+  <!-- MODAL 1: BUAT STOK KARTU (UNIFIED SINGLE & MASSAL) -->
+  <div id="create-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-md z-50 flex items-center justify-center p-4 hidden">
     <div class="bg-white w-full max-w-md rounded-3xl p-6 sm:p-8 shadow-2xl animate-modal border border-slate-100 max-h-[90vh] overflow-y-auto">
-      <h3 class="font-extrabold text-slate-900 text-lg mb-1">⚡ Generate Kartu Massal</h3>
-      <p class="text-xs text-slate-500 mb-6">Buat puluhan kode kartu secara otomatis & acak unik.</p>
-      
-      <label class="block text-xs font-semibold text-slate-700 mb-1.5">Kategori Stok</label>
-      <select id="batchCategory" class="w-full bg-slate-50 border border-slate-200 rounded-2xl p-3 mb-4 text-sm font-semibold text-slate-800 focus:outline-none focus:ring-2 focus:ring-emerald-500/20">
-        <option value="Retail Local">🏪 Retail Local (Door-to-Door)</option>
-        <option value="Reseller Lynk.id">🔗 Reseller (Lynk.id)</option>
-        <option value="TikTok Shop">🎵 TikTok Shop</option>
-        <option value="Shopee">🟠 Shopee</option>
-        <option value="Demo Sample">🧪 Demo / Sampel</option>
-      </select>
+      <h3 class="font-extrabold text-slate-900 text-lg mb-1">⚡ Buat Stok Kartu Baru</h3>
+      <p class="text-xs text-slate-500 mb-5">Semua kode dibuat universal (<code class="bg-slate-100 px-1 py-0.5 rounded font-mono text-blue-600">RSC-XXXXX</code>) agar stiker fisik bebas dipakai di channel mana pun.</p>
 
       <div class="grid grid-cols-2 gap-3 mb-4">
         <div>
-          <label class="block text-xs font-semibold text-slate-700 mb-1.5">Reseller ID (Opsional)</label>
-          <input id="batchResellerId" type="text" placeholder="Contoh: RSL-01" autocomplete="off" class="w-full bg-slate-50 border border-slate-200 rounded-2xl p-3 text-sm font-semibold">
+          <label class="block text-xs font-semibold text-slate-700 mb-1.5">Jumlah Kartu</label>
+          <input id="createCount" type="number" min="1" max="200" value="8" oninput="handleCreateCountChange()" class="w-full bg-slate-50 border border-slate-200 rounded-2xl p-3 text-sm font-bold text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500/20">
         </div>
         <div>
           <label class="block text-xs font-semibold text-slate-700 mb-1.5">PIN Default (Opsional)</label>
-          <input id="batchPin" type="password" maxlength="4" placeholder="••••" autocomplete="new-password" class="w-full bg-slate-50 border border-slate-200 rounded-2xl p-3 text-sm tracking-widest">
+          <input id="createPin" type="password" maxlength="4" placeholder="Kosongkan" autocomplete="new-password" class="w-full bg-slate-50 border border-slate-200 rounded-2xl p-3 text-sm tracking-widest">
         </div>
       </div>
 
-      <label class="block text-xs font-semibold text-slate-700 mb-1.5">Catatan Reseller / Batch (Opsional)</label>
-      <input id="batchResellerNotes" type="text" placeholder="Contoh: Paket 50 Pcs Lunas Transfer" autocomplete="off" class="w-full bg-slate-50 border border-slate-200 rounded-2xl p-3 mb-4 text-sm">
-
-      <label class="block text-xs font-semibold text-slate-700 mb-1.5">Prefix Custom (Kosongkan untuk Otomatis RSC-[CAT]-XXXXX)</label>
-      <input id="batchPrefix" type="text" placeholder="Otomatis acak jika dikosongkan" autocomplete="off" class="w-full bg-slate-50 border border-slate-200 rounded-2xl p-3 mb-4 text-sm font-semibold uppercase">
-      
-      <div class="grid grid-cols-2 gap-3 mb-4">
-        <div>
-          <label class="block text-xs font-semibold text-slate-700 mb-1.5">Angka Awal (Hanya jika custom)</label>
-          <input id="batchStart" type="number" placeholder="Otomatis" autocomplete="off" class="w-full bg-slate-50 border border-slate-200 rounded-2xl p-3 text-sm">
-        </div>
-        <div>
-          <label class="block text-xs font-semibold text-slate-700 mb-1.5">Jumlah Kartu</label>
-          <input id="batchCount" type="number" placeholder="10" autocomplete="off" class="w-full bg-slate-50 border border-slate-200 rounded-2xl p-3 text-sm">
+      <!-- MUNCUL HANYA JIKA JUMLAH = 1 -->
+      <div id="singleCodeContainer" class="hidden mb-4">
+        <label class="block text-xs font-semibold text-slate-700 mb-1.5">Kode Kartu (Satuan)</label>
+        <div class="flex gap-2">
+          <input id="createSingleCode" type="text" autocomplete="off" placeholder="RSC-XXXXX" class="w-full bg-slate-50 border border-slate-200 rounded-2xl p-3 text-sm font-semibold uppercase">
+          <button type="button" onclick="refreshSingleCreateCode()" class="bg-blue-100 hover:bg-blue-200 text-blue-700 font-bold px-3.5 py-3 rounded-2xl text-xs whitespace-nowrap transition-all">
+            🎲 Acak
+          </button>
         </div>
       </div>
+
+      <!-- INFO PREVIEW JIKA JUMLAH > 1 -->
+      <div id="batchPreviewBox" class="bg-blue-50/70 border border-blue-100 rounded-2xl p-3 mb-4 text-xs text-blue-800">
+        💡 Tips cetak vendor: kelipatan <strong>8 kartu</strong> pas untuk 1 lembar ukuran 27.5 x 46 cm.
+      </div>
+
+      <label class="block text-xs font-semibold text-slate-700 mb-1.5">Label Batch / Catatan Cetak (Opsional)</label>
+      <input id="createBatchLabel" type="text" placeholder="Contoh: Batch Cetak Nov #1" autocomplete="off" class="w-full bg-slate-50 border border-slate-200 rounded-2xl p-3 mb-4 text-sm">
 
       <div class="flex items-center gap-3 bg-slate-50 border border-slate-200 rounded-2xl p-3.5 mb-6">
-        <input id="batchEnableRouting" type="checkbox" class="w-4 h-4 text-emerald-600 rounded cursor-pointer">
-        <label for="batchEnableRouting" class="text-xs font-semibold text-slate-700 cursor-pointer select-none">Aktifkan Smart Routing saat Generate Massal</label>
+        <input id="createEnableRouting" type="checkbox" class="w-4 h-4 text-blue-600 rounded cursor-pointer">
+        <label for="createEnableRouting" class="text-xs font-semibold text-slate-700 cursor-pointer select-none">Aktifkan Smart Routing (Filter Bintang 1–3)</label>
       </div>
       
       <div class="flex gap-2">
-        <button onclick="closeBatchModal()" class="w-1/2 bg-slate-100 text-slate-600 font-semibold py-3 rounded-2xl text-sm">Batal</button>
-        <button id="batchSubmitBtn" onclick="submitBatchGenerate()" class="w-1/2 bg-emerald-600 text-white font-semibold py-3 rounded-2xl text-sm shadow-md">Proses Massal</button>
+        <button onclick="closeCreateModal()" class="w-1/2 bg-slate-100 text-slate-600 font-semibold py-3 rounded-2xl text-sm">Batal</button>
+        <button id="createSubmitBtn" onclick="submitCreateCards()" class="w-1/2 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 rounded-2xl text-sm shadow-md transition-all">Buat Kartu</button>
       </div>
     </div>
   </div>
 
-  <!-- MODAL TAMBAH/EDIT SINGLE -->
-  <div id="card-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-md z-50 flex items-center justify-center p-4 hidden">
-    <div class="bg-white w-full max-w-md rounded-3xl p-6 sm:p-8 shadow-2xl animate-modal border border-slate-100 max-h-[90vh] overflow-y-auto">
-      <h3 id="modalFormTitle" class="font-extrabold text-slate-900 text-lg mb-1">Tambah Kartu Baru</h3>
-      <p id="modalFormSub" class="text-xs text-slate-500 mb-4"></p>
-      
-      <label class="block text-xs font-semibold text-slate-700 mb-1.5">Kategori Stok</label>
-      <select id="formCategory" onchange="autoGenerateSingleCode('RSC')" class="w-full bg-slate-50 border border-slate-200 rounded-2xl p-3 mb-4 text-sm font-semibold text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500/20">
-        <option value="Retail Local">🏪 Retail Local (Door-to-Door)</option>
-        <option value="Reseller Lynk.id">🔗 Reseller (Lynk.id)</option>
-        <option value="TikTok Shop">🎵 TikTok Shop</option>
-        <option value="Shopee">🟠 Shopee</option>
-        <option value="Demo Sample">🧪 Demo / Sampel</option>
+  <!-- MODAL 2: PUSAT CETAK & EXPORT TERPADU -->
+  <div id="export-center-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-md z-50 flex items-center justify-center p-4 hidden">
+    <div class="bg-white w-full max-w-md rounded-3xl p-6 sm:p-8 shadow-2xl animate-modal border border-slate-100">
+      <h3 class="font-extrabold text-slate-900 text-lg mb-1">🖨️ Pusat Cetak & Export</h3>
+      <p class="text-xs text-slate-500 mb-5">Pilih kumpulan kartu dan format file cetak/backup yang dibutuhkan.</p>
+
+      <label class="block text-xs font-semibold text-slate-700 mb-1.5">1. Pilih Target Kartu</label>
+      <select id="exportTargetType" onchange="toggleExportBatchSelect()" class="w-full bg-slate-50 border border-slate-200 rounded-2xl p-3 mb-4 text-sm font-semibold text-slate-800 focus:outline-none focus:ring-2 focus:ring-amber-500/20">
+        <option value="blank">🟡 Semua Kartu Blank (Belum Dipakai)</option>
+        <option value="selected">☑️ Kartu yang Dicentang di Tabel (0)</option>
+        <option value="batch">🏷️ Berdasarkan Batch / Catatan Cetak</option>
+        <option value="all">📋 Semua Kartu di Database</option>
       </select>
 
-      <div class="grid grid-cols-2 gap-3 mb-4">
-        <div>
-          <label class="block text-xs font-semibold text-slate-700 mb-1.5">Reseller ID (Opsional)</label>
-          <input id="formResellerId" type="text" placeholder="RSL-BDG-01" autocomplete="off" class="w-full bg-slate-50 border border-slate-200 rounded-2xl p-3 text-sm font-semibold">
-        </div>
-        <div>
-          <label class="block text-xs font-semibold text-slate-700 mb-1.5">PIN Klien (Opsional)</label>
-          <input id="formPin" type="password" maxlength="4" autocomplete="new-password" placeholder="••••" class="w-full bg-slate-50 border border-slate-200 rounded-2xl p-3 text-sm tracking-widest">
-        </div>
+      <div id="exportBatchContainer" class="hidden mb-4">
+        <label class="block text-xs font-semibold text-slate-700 mb-1.5">Pilih Batch Cetak</label>
+        <select id="exportBatchSelect" class="w-full bg-slate-50 border border-slate-200 rounded-2xl p-3 text-sm font-semibold text-slate-800 focus:outline-none focus:ring-2 focus:ring-amber-500/20">
+          <option value="">-- Tidak ada label batch --</option>
+        </select>
       </div>
 
-      <label class="block text-xs font-semibold text-slate-700 mb-1.5">Catatan Reseller / Batch (Opsional)</label>
-      <input id="formResellerNotes" type="text" autocomplete="off" placeholder="Contoh: Pembayaran Lunas" class="w-full bg-slate-50 border border-slate-200 rounded-2xl p-3 mb-4 text-sm">
+      <label class="block text-xs font-semibold text-slate-700 mb-1.5">2. Format Output Cetak / File</label>
+      <select id="exportFormatType" class="w-full bg-slate-50 border border-slate-200 rounded-2xl p-3 mb-6 text-sm font-semibold text-slate-800 focus:outline-none focus:ring-2 focus:ring-amber-500/20">
+        <option value="print_27.5x46_pdf">📕 Layout Cetak Vendor (27.5 x 46 cm - PDF)</option>
+        <option value="print_27.5x46_zip">📦 Layout Cetak Vendor (27.5 x 46 cm - ZIP PNG)</option>
+        <option value="print_A3+_pdf">📄 Layout A3+ (32.9 x 48.3 cm - PDF)</option>
+        <option value="print_A3_pdf">📄 Layout A3 (29.7 x 42.0 cm - PDF)</option>
+        <option value="print_A4_pdf">📄 Layout A4 (21.0 x 29.7 cm - PDF)</option>
+        <option value="design_zip">🖼️ Desain Kartu Satuan + QR (ZIP PNG)</option>
+        <option value="qr_zip">🔲 QR Code Mentahan Saja (ZIP PNG)</option>
+        <option value="csv">📊 Export Data Spreadsheet (CSV)</option>
+      </select>
+
+      <div class="flex gap-2">
+        <button onclick="closeExportCenterModal()" class="w-1/2 bg-slate-100 text-slate-600 font-semibold py-3 rounded-2xl text-sm">Batal</button>
+        <button onclick="processUnifiedExport()" class="w-1/2 bg-amber-600 hover:bg-amber-700 text-white font-semibold py-3 rounded-2xl text-sm shadow-md transition-all">Proses & Unduh</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL 3: EDIT KARTU -->
+  <div id="edit-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-md z-50 flex items-center justify-center p-4 hidden">
+    <div class="bg-white w-full max-w-md rounded-3xl p-6 sm:p-8 shadow-2xl animate-modal border border-slate-100 max-h-[90vh] overflow-y-auto">
+      <h3 id="modalFormTitle" class="font-extrabold text-slate-900 text-lg mb-1">Edit Kartu</h3>
+      <p id="modalFormSub" class="text-xs text-slate-500 mb-4"></p>
 
       <label class="block text-xs font-semibold text-slate-700 mb-1.5">Kode Kartu</label>
       <div class="flex gap-2 mb-4">
-        <input id="formCardCode" type="text" autocomplete="off" placeholder="Contoh: RSC-RTL-8K3A9" class="w-full bg-slate-50 border border-slate-200 rounded-2xl p-3 text-sm font-semibold uppercase">
-        <button id="btnAcakKode" type="button" onclick="autoGenerateSingleCode('RSC')" class="bg-blue-100 hover:bg-blue-200 text-blue-700 font-bold px-4 py-3 rounded-2xl text-xs whitespace-nowrap transition-all">
-          🎲 Acak Kode
+        <input id="formCardCode" type="text" autocomplete="off" class="w-full bg-slate-50 border border-slate-200 rounded-2xl p-3 text-sm font-semibold uppercase">
+        <button id="btnAcakKode" type="button" onclick="randomizeEditCode()" class="bg-blue-100 hover:bg-blue-200 text-blue-700 font-bold px-3.5 py-3 rounded-2xl text-xs whitespace-nowrap transition-all">
+          🎲 Acak
         </button>
       </div>
+
+      <label class="block text-xs font-semibold text-slate-700 mb-1.5">Batch / Catatan (Opsional)</label>
+      <input id="formBatchNotes" type="text" autocomplete="off" placeholder="Contoh: Batch Cetak Nov #1 / Terjual di Shopee" class="w-full bg-slate-50 border border-slate-200 rounded-2xl p-3 mb-4 text-sm">
       
       <label class="block text-xs font-semibold text-slate-700 mb-1.5">Nama Bisnis</label>
-      <input id="formBizName" type="text" autocomplete="off" placeholder="Kosongkan jika belum diisi klien" class="w-full bg-slate-50 border border-slate-200 rounded-2xl p-3 mb-4 text-sm">
+      <input id="formBizName" type="text" autocomplete="off" placeholder="Kosongkan jika kartu masih blank" class="w-full bg-slate-50 border border-slate-200 rounded-2xl p-3 mb-4 text-sm">
       
       <label class="block text-xs font-semibold text-slate-700 mb-1.5">Link Review / Place ID</label>
-      <input id="formReviewUrl" type="text" autocomplete="off" placeholder="ChIJ... atau link review" class="w-full bg-slate-50 border border-slate-200 rounded-2xl p-3 mb-4 text-sm">
+      <input id="formReviewUrl" type="text" autocomplete="off" placeholder="ChIJ... atau link review Google" class="w-full bg-slate-50 border border-slate-200 rounded-2xl p-3 mb-4 text-sm">
       
-      <label class="block text-xs font-semibold text-slate-700 mb-1.5">No. WhatsApp Owner</label>
-      <input id="formOwnerPhone" type="tel" autocomplete="off" placeholder="628123456789" class="w-full bg-slate-50 border border-slate-200 rounded-2xl p-3 mb-4 text-sm">
+      <div class="grid grid-cols-2 gap-3 mb-4">
+        <div>
+          <label class="block text-xs font-semibold text-slate-700 mb-1.5">No. WhatsApp Owner</label>
+          <input id="formOwnerPhone" type="tel" autocomplete="off" placeholder="628123456789" class="w-full bg-slate-50 border border-slate-200 rounded-2xl p-3 text-sm">
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-slate-700 mb-1.5">PIN Klien (4 Digit)</label>
+          <input id="formPin" type="text" maxlength="4" autocomplete="off" placeholder="••••" class="w-full bg-slate-50 border border-slate-200 rounded-2xl p-3 text-sm font-mono tracking-widest">
+        </div>
+      </div>
       
       <div class="flex items-center gap-3 bg-slate-50 border border-slate-200 rounded-2xl p-3.5 mb-6">
         <input id="formEnableRouting" type="checkbox" checked class="w-4 h-4 text-blue-600 rounded">
-        <label for="formEnableRouting" class="text-xs font-semibold text-slate-700 cursor-pointer select-none">Aktifkan Smart Routing (Filter Bintang 1-3)</label>
+        <label for="formEnableRouting" class="text-xs font-semibold text-slate-700 cursor-pointer select-none">Aktifkan Smart Routing (Filter Bintang 1–3)</label>
       </div>
 
       <div class="flex gap-2">
-        <button onclick="closeModal()" class="w-1/2 bg-slate-100 text-slate-600 font-semibold py-3 rounded-2xl text-sm">Batal</button>
+        <button onclick="closeEditModal()" class="w-1/2 bg-slate-100 text-slate-600 font-semibold py-3 rounded-2xl text-sm">Batal</button>
         <button id="saveCardBtn" onclick="saveCardData()" class="w-1/2 bg-blue-600 text-white font-semibold py-3 rounded-2xl text-sm shadow-md">Simpan</button>
       </div>
     </div>
@@ -543,7 +419,6 @@
       <h3 id="zipProgressTitle" class="font-bold text-slate-900 text-base mb-1">Memproses File...</h3>
       <p id="zipProgressText" class="text-xs text-slate-500 mb-4">Menyiapkan gambar kartu.</p>
 
-      <!-- BAR DYNAMIC 100% -->
       <div class="w-full bg-slate-100 rounded-full h-3 mb-2 overflow-hidden border border-slate-200/80">
         <div id="zipProgressBar" class="bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 h-3 rounded-full transition-all duration-200" style="width: 0%"></div>
       </div>
@@ -570,25 +445,15 @@
     const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imx6dWRyenBjYWhqeWVxZHZreXRvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTIyNDYyODcsImV4cCI6MjEwNzgyMjI4N30.nI_84CyPRp-sv6_VJvpUB1bk7XWN0NCtSotwztl_lEY';
     const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-    // MAPPING PREFIX KATEGORI STOK
-    const CATEGORY_PREFIX_MAP = {
-      'Retail Local': 'RTL',
-      'Reseller Lynk.id': 'RSL',
-      'TikTok Shop': 'TTS',
-      'Shopee': 'SHP',
-      'Demo Sample': 'DMO'
-    };
-
     /**
-     * Generator Kode Random Unik Anti-Bentrok
+     * Generator Kode Universal Tunggal: RSC-XXXXX
+     * Tanpa pemisahan Shopee/Retail/TikTok agar semua stiker fisik fleksibel dipakai di mana saja.
      */
-    function generateRandomUniqueCode(basePrefix, categoryName, existingData) {
-      const catPrefix = CATEGORY_PREFIX_MAP[categoryName] || 'GEN';
+    function generateUniversalUniqueCode(existingData) {
       const chars = '23456789ABCDEFGHJKLMNPQRSTUVWXYZ';
-      
       const existingSet = new Set(
-        Array.isArray(existingData) 
-          ? existingData.map(c => typeof c === 'string' ? c.toUpperCase() : (c.card_code ? c.card_code.toUpperCase() : '')) 
+        Array.isArray(existingData)
+          ? existingData.map(c => typeof c === 'string' ? c.toUpperCase() : (c.card_code ? c.card_code.toUpperCase() : ''))
           : existingData
       );
 
@@ -600,21 +465,13 @@
         for (let i = 0; i < 5; i++) {
           randomStr += chars.charAt(Math.floor(Math.random() * chars.length));
         }
-        newCode = `${basePrefix}-${catPrefix}-${randomStr}`;
-        
+        newCode = `RSC-${randomStr}`;
         if (!existingSet.has(newCode)) {
           isUnique = true;
           existingSet.add(newCode);
         }
       }
-
       return newCode;
-    }
-
-    function autoGenerateSingleCode(basePrefix = 'RSC') {
-      const category = document.getElementById('formCategory').value;
-      const uniqueCode = generateRandomUniqueCode(basePrefix, category, allCardsData);
-      document.getElementById('formCardCode').value = uniqueCode;
     }
 
     let allCardsData = [];
@@ -625,19 +482,12 @@
     let editingOriginalCode = null;
     let modalCallback = null;
 
-    // KONTROL SORTING TABEL
     let currentSortField = 'card_code';
     let currentSortDirection = 'asc';
-
-    // SELEKSI CHECKBOX GLOBAL MULTI-HALAMAN
     let selectedCardCodesSet = new Set();
 
-    // VARIABLE PAGINASI
     let currentPage = 1;
     const ITEMS_PER_PAGE = 12;
-
-    // NFC READER / WRITER SESSION
-    let ndefController = null;
 
     // CEK SESI SUPABASE AUTH SAAT HALAMAN DIMUAT
     window.addEventListener('DOMContentLoaded', async () => {
@@ -683,7 +533,6 @@
       }
     }
 
-    // HELPER PROGRESS BAR REAL-TIME
     function updateProgressBar(current, total, title = 'Memproses File...', statusText = '') {
       const modal = document.getElementById('zip-modal');
       const progressBar = document.getElementById('zipProgressBar');
@@ -727,7 +576,6 @@
       }
     }
 
-    // SUPABASE AUTHENTICATION: LOGIN DENGAN EMAIL & PASSWORD
     async function handleAdminLogin() {
       const email = document.getElementById('adminEmailInput').value.trim();
       const password = document.getElementById('adminPasswordInput').value.trim();
@@ -782,6 +630,7 @@
         allCardsData = cards;
         document.getElementById('count-cards').innerText = allCardsData.length;
         updateStats();
+        populateBatchDropdowns();
         filterCards();
       }
     }
@@ -806,6 +655,23 @@
       document.getElementById('statInactive').innerText = allCardsData.length - activeCount;
     }
 
+    function populateBatchDropdowns() {
+      const batches = [...new Set(allCardsData.map(c => c.reseller_notes).filter(Boolean))];
+      
+      const tableFilter = document.getElementById('batchFilter');
+      const currentTableVal = tableFilter.value;
+      tableFilter.innerHTML = `<option value="all">🏷️ Semua Batch Cetak</option>`;
+      batches.forEach(b => {
+        tableFilter.innerHTML += `<option value="${b}">${b}</option>`;
+      });
+      if (batches.includes(currentTableVal)) tableFilter.value = currentTableVal;
+
+      const exportBatch = document.getElementById('exportBatchSelect');
+      exportBatch.innerHTML = batches.length > 0 
+        ? batches.map(b => `<option value="${b}">${b}</option>`).join('')
+        : `<option value="">-- Belum ada label batch --</option>`;
+    }
+
     function setFilterStatus(status) {
       currentFilter = status;
       ['all', 'active', 'inactive'].forEach(s => {
@@ -823,7 +689,7 @@
         currentSortDirection = 'asc';
       }
 
-      ['card_code', 'category', 'business_name', 'is_activated'].forEach(f => {
+      ['card_code', 'reseller_notes', 'business_name', 'is_activated'].forEach(f => {
         const icon = document.getElementById(`sort-icon-${f}`);
         if (icon) icon.innerText = f === currentSortField ? (currentSortDirection === 'asc' ? '▲' : '▼') : '↕';
       });
@@ -834,25 +700,21 @@
     function filterCards(resetPage = true) {
       if (resetPage) currentPage = 1;
       const q = document.getElementById('searchInput').value.toLowerCase().trim();
-      const catFilter = document.getElementById('categoryFilter').value;
-      const rFilter = document.getElementById('routingFilter').value;
+      const batchVal = document.getElementById('batchFilter').value;
 
       let filtered = allCardsData.filter(c => {
         const matchQuery = c.card_code.toLowerCase().includes(q) || 
                           (c.business_name && c.business_name.toLowerCase().includes(q)) || 
-                          (c.reseller_id && c.reseller_id.toLowerCase().includes(q)) ||
+                          (c.reseller_notes && c.reseller_notes.toLowerCase().includes(q)) ||
                           (c.owner_phone && c.owner_phone.includes(q));
         
-        const matchCat = (catFilter === 'all') || (c.category === catFilter);
-        const matchRouting = (rFilter === 'all') || (rFilter === 'on' && c.enable_routing !== false) || (rFilter === 'off' && c.enable_routing === false);
-        
-        return matchQuery && matchCat && matchRouting;
+        const matchBatch = (batchVal === 'all') || (c.reseller_notes === batchVal);
+        return matchQuery && matchBatch;
       });
 
       if (currentFilter === 'active') filtered = filtered.filter(c => c.is_activated);
       else if (currentFilter === 'inactive') filtered = filtered.filter(c => !c.is_activated);
       
-      // LOGIKA SORTING DATA
       filtered.sort((a, b) => {
         let valA = a[currentSortField] || '';
         let valB = b[currentSortField] || '';
@@ -867,13 +729,10 @@
       renderCardsTable(currentFilteredCards);
     }
 
-    // MANAGEMEN SELEKSI MULTI-HALAMAN (PERSISTEN)
+    // SELEKSI CHECKBOX MULTI-HALAMAN
     function handleCardCheckboxChange(cardCode, isChecked) {
-      if (isChecked) {
-        selectedCardCodesSet.add(cardCode);
-      } else {
-        selectedCardCodesSet.delete(cardCode);
-      }
+      if (isChecked) selectedCardCodesSet.add(cardCode);
+      else selectedCardCodesSet.delete(cardCode);
       updateBulkToolbar();
     }
 
@@ -885,6 +744,18 @@
         else selectedCardCodesSet.delete(cb.value);
       });
       updateBulkToolbar();
+    }
+
+    function selectAllBlankCards() {
+      const blankCards = allCardsData.filter(c => !c.is_activated);
+      if (blankCards.length === 0) {
+        showNotification('Informasi', 'Tidak ada kartu berstatus Blank saat ini.', 'info');
+        return;
+      }
+      selectedCardCodesSet.clear();
+      blankCards.forEach(c => selectedCardCodesSet.add(c.card_code));
+      renderCardsTable(currentFilteredCards);
+      showNotification('Kartu Blank Terpilih', `${blankCards.length} kartu Blank dipilih dan siap dicetak.`, 'success');
     }
 
     function selectAllFilteredCards() {
@@ -900,14 +771,10 @@
     function updateBulkToolbar() {
       const toolbar = document.getElementById('bulkToolbar');
       const countEl = document.getElementById('selectedCount');
-      
       const count = selectedCardCodesSet.size;
       countEl.innerText = count;
-      if (count > 0) {
-        toolbar.classList.remove('hidden');
-      } else {
-        toolbar.classList.add('hidden');
-      }
+      if (count > 0) toolbar.classList.remove('hidden');
+      else toolbar.classList.add('hidden');
     }
 
     function getSelectedCardCodes() {
@@ -941,61 +808,6 @@
       fetchCards();
     }
 
-    async function bulkDownloadQrSelectedZip() {
-      const codes = getSelectedCardCodes();
-      if (codes.length === 0) return;
-
-      const zip = new JSZip();
-      const folder = zip.folder("QR_Mentahan_Terpilih");
-
-      for (let i = 0; i < codes.length; i++) {
-        const code = codes[i];
-        updateProgressBar(i + 1, codes.length, "Generasi QR Code (ZIP)", `Memproses QR (${i + 1}/${codes.length}): ${code}`);
-        
-        const dataUrl = await renderPipeline.generateQrDataUrl(`${DOMAIN_BASE}/?code=${code}`);
-        if (dataUrl) folder.file(`QR_${code}.png`, dataUrl.replace(/^data:image\/png;base64,/, ""), { base64: true });
-        await new Promise(r => setTimeout(r, 20));
-      }
-
-      updateProgressBar(codes.length, codes.length, "Mengompres ke ZIP...", "Menyusun arsip ZIP mentahan QR...");
-      const content = await zip.generateAsync({ type: "blob" });
-      closeProgressBar();
-      
-      saveAs(content, `QR_Mentahan_Terpilih_${codes.length}_Kartu.zip`);
-      showNotification('Berhasil', 'ZIP QR Mentahan terpilih berhasil diunduh!', 'success');
-    }
-
-    async function bulkDownloadDesignSelectedZip() {
-      const codes = getSelectedCardCodes();
-      if (codes.length === 0) return;
-
-      try {
-        const zip = new JSZip();
-        const folder = zip.folder("Desain_Kartu_Terpilih");
-
-        for (let i = 0; i < codes.length; i++) {
-          const code = codes[i];
-          updateProgressBar(i + 1, codes.length, "Generasi Desain Kartu (ZIP)", `Merender Desain Kartu (${i + 1}/${codes.length}): ${code}`);
-          
-          const cardDataUrl = await renderPipeline.renderSingleCard(code);
-          if (cardDataUrl) {
-            folder.file(`Desain_${code}.png`, cardDataUrl.replace(/^data:image\/png;base64,/, ""), { base64: true });
-          }
-          await new Promise(r => setTimeout(r, 30));
-        }
-
-        updateProgressBar(codes.length, codes.length, "Mengompres ke ZIP...", "Menyusun arsip file PNG...");
-        const content = await zip.generateAsync({ type: "blob" });
-        closeProgressBar();
-
-        saveAs(content, `Desain_Terpilih_${codes.length}_Kartu.zip`);
-        showNotification('Berhasil', 'ZIP Desain Kartu Terpilih berhasil diunduh!', 'success');
-      } catch (err) {
-        closeProgressBar();
-        showNotification('Gagal', err.message, 'error');
-      }
-    }
-
     function roundRect(ctx, x, y, width, height, radius) {
       ctx.beginPath();
       ctx.moveTo(x + radius, y);
@@ -1011,7 +823,7 @@
     }
 
     // ==========================================
-    // MODUL TERPISAH: CARD RENDER PIPELINE
+    // MODUL CARD RENDER PIPELINE (TEMPLATE + QR)
     // ==========================================
     class CardRenderPipeline {
       constructor() {
@@ -1076,11 +888,8 @@
 
       async generateQrDataUrl(text) {
         const elem = await this.generateQrElement(text);
-        if (elem instanceof HTMLCanvasElement) {
-          return elem.toDataURL('image/png');
-        } else if (elem instanceof HTMLImageElement) {
-          return elem.src;
-        }
+        if (elem instanceof HTMLCanvasElement) return elem.toDataURL('image/png');
+        if (elem instanceof HTMLImageElement) return elem.src;
         return '';
       }
 
@@ -1097,7 +906,6 @@
 
         ctx.imageSmoothingEnabled = true;
         ctx.imageSmoothingQuality = 'high';
-
         ctx.drawImage(this.templateImg, 0, 0, w, h);
 
         const qrSize = w * 0.262;
@@ -1138,30 +946,240 @@
     const renderPipeline = new CardRenderPipeline();
 
     // ============================================================
-    // MODAL & HANDLER PENGATURAN CETAK (A4 / A3 / A3+ & PDF / ZIP)
+    // MODAL 1: BUAT STOK KARTU (UNIFIED SINGLE & MASSAL)
     // ============================================================
-    function openPrintLayoutModal() {
-      const codes = getSelectedCardCodes();
-      if (codes.length === 0) {
-        showNotification('Informasi', 'Pilih minimal satu kartu untuk dicetak.', 'info');
+    function openCreateModal() {
+      document.getElementById('createCount').value = 8;
+      document.getElementById('createPin').value = '';
+      document.getElementById('createBatchLabel').value = '';
+      document.getElementById('createEnableRouting').checked = false;
+      handleCreateCountChange();
+      document.getElementById('create-modal').classList.remove('hidden');
+    }
+
+    function closeCreateModal() {
+      document.getElementById('create-modal').classList.add('hidden');
+    }
+
+    function handleCreateCountChange() {
+      const count = parseInt(document.getElementById('createCount').value, 10) || 1;
+      const singleBox = document.getElementById('singleCodeContainer');
+      const batchBox = document.getElementById('batchPreviewBox');
+
+      if (count === 1) {
+        singleBox.classList.remove('hidden');
+        batchBox.classList.add('hidden');
+        refreshSingleCreateCode();
+      } else {
+        singleBox.classList.add('hidden');
+        batchBox.classList.remove('hidden');
+      }
+    }
+
+    function refreshSingleCreateCode() {
+      document.getElementById('createSingleCode').value = generateUniversalUniqueCode(allCardsData);
+    }
+
+    async function submitCreateCards() {
+      const count = parseInt(document.getElementById('createCount').value, 10);
+      const defaultPin = document.getElementById('createPin').value.trim() || null;
+      const batchLabel = document.getElementById('createBatchLabel').value.trim() || null;
+      const enableRouting = document.getElementById('createEnableRouting').checked;
+
+      if (isNaN(count) || count < 1 || count > 200) {
+        showNotification('Perhatian', 'Jumlah kartu harus antara 1 sampai 200.', 'info');
         return;
       }
-      document.getElementById('print-layout-modal').classList.remove('hidden');
+
+      setButtonLoading('createSubmitBtn', true, 'Buat Kartu');
+
+      const existingSet = new Set(allCardsData.map(c => c.card_code.toUpperCase()));
+      const payload = [];
+
+      if (count === 1) {
+        const customCode = document.getElementById('createSingleCode').value.trim().toUpperCase();
+        if (!customCode) {
+          setButtonLoading('createSubmitBtn', false, 'Buat Kartu');
+          showNotification('Perhatian', 'Kode kartu wajib diisi.', 'info');
+          return;
+        }
+        payload.push({
+          card_code: customCode,
+          category: 'Universal',
+          reseller_notes: batchLabel,
+          pin: defaultPin,
+          is_activated: false,
+          enable_routing: enableRouting
+        });
+      } else {
+        for (let i = 0; i < count; i++) {
+          const code = generateUniversalUniqueCode(existingSet);
+          payload.push({
+            card_code: code,
+            category: 'Universal',
+            reseller_notes: batchLabel,
+            pin: defaultPin,
+            is_activated: false,
+            enable_routing: enableRouting
+          });
+        }
+      }
+
+      const { error } = await supabaseClient.from('cards').upsert(payload, { onConflict: 'card_code' });
+      setButtonLoading('createSubmitBtn', false, 'Buat Kartu');
+
+      if (!error) {
+        showNotification('Berhasil', `${count} kartu universal siap cetak berhasil dibuat!`, 'success', () => {
+          closeCreateModal();
+          fetchCards();
+        });
+      } else {
+        showNotification('Gagal', error.message, 'error');
+      }
     }
 
-    function closePrintLayoutModal() {
-      document.getElementById('print-layout-modal').classList.add('hidden');
+    // ============================================================
+    // MODAL 2: PUSAT CETAK & EXPORT TERPADU
+    // ============================================================
+    function openExportCenterModal(defaultTarget = null) {
+      const targetSelect = document.getElementById('exportTargetType');
+      const selectedCount = selectedCardCodesSet.size;
+      targetSelect.options[1].text = `☑️ Kartu yang Dicentang di Tabel (${selectedCount})`;
+
+      if (defaultTarget) {
+        targetSelect.value = defaultTarget;
+      } else if (selectedCount > 0) {
+        targetSelect.value = 'selected';
+      } else {
+        targetSelect.value = 'blank';
+      }
+
+      toggleExportBatchSelect();
+      document.getElementById('export-center-modal').classList.remove('hidden');
     }
 
-    async function processPrintLayoutDownload() {
-      const codes = getSelectedCardCodes();
-      if (codes.length === 0) return;
+    function closeExportCenterModal() {
+      document.getElementById('export-center-modal').classList.add('hidden');
+    }
 
-      const paperSize = document.getElementById('printPaperSize').value;
-      const outputFormat = document.getElementById('printOutputFormat').value;
+    function toggleExportBatchSelect() {
+      const targetType = document.getElementById('exportTargetType').value;
+      const batchContainer = document.getElementById('exportBatchContainer');
+      if (targetType === 'batch') batchContainer.classList.remove('hidden');
+      else batchContainer.classList.add('hidden');
+    }
 
-      closePrintLayoutModal();
+    async function processUnifiedExport() {
+      const targetType = document.getElementById('exportTargetType').value;
+      const formatType = document.getElementById('exportFormatType').value;
 
+      let targetCards = [];
+      let labelSuffix = 'All';
+
+      if (targetType === 'selected') {
+        const selectedCodes = getSelectedCardCodes();
+        if (selectedCodes.length === 0) {
+          showNotification('Perhatian', 'Belum ada kartu yang dicentang di tabel.', 'info');
+          return;
+        }
+        targetCards = allCardsData.filter(c => selectedCardCodesSet.has(c.card_code));
+        labelSuffix = `Terpilih_${targetCards.length}`;
+      } else if (targetType === 'blank') {
+        targetCards = allCardsData.filter(c => !c.is_activated);
+        labelSuffix = `Blank_${targetCards.length}`;
+      } else if (targetType === 'batch') {
+        const batchVal = document.getElementById('exportBatchSelect').value;
+        if (!batchVal) {
+          showNotification('Perhatian', 'Pilih label batch terlebih dahulu.', 'info');
+          return;
+        }
+        targetCards = allCardsData.filter(c => c.reseller_notes === batchVal);
+        labelSuffix = batchVal.replace(/[^a-zA-Z0-9]/g, '_');
+      } else {
+        targetCards = [...allCardsData];
+        labelSuffix = `Semua_${targetCards.length}`;
+      }
+
+      if (targetCards.length === 0) {
+        showNotification('Informasi', 'Tidak ada data kartu yang sesuai dengan pilihan target.', 'info');
+        return;
+      }
+
+      closeExportCenterModal();
+
+      // 1. CSV EXPORT
+      if (formatType === 'csv') {
+        let csvContent = "data:text/csv;charset=utf-8,Kode Kartu,Batch / Catatan,URL NFC dan QR,Nama Bisnis,No WA Owner,Status,PIN,Smart Routing\n";
+        targetCards.forEach(card => {
+          csvContent += `${card.card_code},"${card.reseller_notes || '-'}",${DOMAIN_BASE}/?code=${card.card_code},"${card.business_name || '-'}",${card.owner_phone || ''},${card.is_activated ? 'AKTIF' : 'BLANK'},${card.pin || ''},${card.enable_routing !== false ? 'ON' : 'OFF'}\n`;
+        });
+        const link = document.createElement("a");
+        link.setAttribute("href", encodeURI(csvContent));
+        link.setAttribute("download", `Data_Kartu_${labelSuffix}.csv`);
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        showNotification('Berhasil', `File CSV (${targetCards.length} kartu) berhasil diunduh!`, 'success');
+        return;
+      }
+
+      // 2. QR MENTAHAN ZIP
+      if (formatType === 'qr_zip') {
+        const zip = new JSZip();
+        const folder = zip.folder(`QR_Mentahan_${labelSuffix}`);
+        for (let i = 0; i < targetCards.length; i++) {
+          const code = targetCards[i].card_code;
+          updateProgressBar(i + 1, targetCards.length, "Generasi QR Mentahan", `Memproses QR (${i + 1}/${targetCards.length}): ${code}`);
+          const dataUrl = await renderPipeline.generateQrDataUrl(`${DOMAIN_BASE}/?code=${code}`);
+          if (dataUrl) folder.file(`QR_${code}.png`, dataUrl.replace(/^data:image\/png;base64,/, ""), { base64: true });
+          await new Promise(r => setTimeout(r, 20));
+        }
+        updateProgressBar(targetCards.length, targetCards.length, "Mengompresi ZIP...", "Menyusun arsip QR...");
+        const content = await zip.generateAsync({ type: "blob" });
+        closeProgressBar();
+        saveAs(content, `QR_Mentahan_${labelSuffix}.zip`);
+        showNotification('Berhasil', 'ZIP QR Mentahan berhasil diunduh!', 'success');
+        return;
+      }
+
+      // 3. DESAIN KARTU SATUAN ZIP
+      if (formatType === 'design_zip') {
+        try {
+          const zip = new JSZip();
+          const folder = zip.folder(`Desain_Kartu_${labelSuffix}`);
+          for (let i = 0; i < targetCards.length; i++) {
+            const code = targetCards[i].card_code;
+            updateProgressBar(i + 1, targetCards.length, "Generasi Desain Kartu", `Merender (${i + 1}/${targetCards.length}): ${code}`);
+            const cardDataUrl = await renderPipeline.renderSingleCard(code);
+            if (cardDataUrl) folder.file(`Desain_${code}.png`, cardDataUrl.replace(/^data:image\/png;base64,/, ""), { base64: true });
+            await new Promise(r => setTimeout(r, 30));
+          }
+          updateProgressBar(targetCards.length, targetCards.length, "Mengompresi ZIP...", "Menyusun arsip desain...");
+          const content = await zip.generateAsync({ type: "blob" });
+          closeProgressBar();
+          saveAs(content, `Desain_Kartu_${labelSuffix}.zip`);
+          showNotification('Berhasil', 'ZIP Desain Kartu berhasil diunduh!', 'success');
+        } catch (err) {
+          closeProgressBar();
+          showNotification('Gagal', err.message, 'error');
+        }
+        return;
+      }
+
+      // 4. LAYOUT CETAK (27.5x46 / A3+ / A3 / A4)
+      const codes = targetCards.map(c => c.card_code);
+      let paperSize = '27.5x46';
+      let outputFormat = 'PDF';
+
+      if (formatType === 'print_27.5x46_zip') { paperSize = '27.5x46'; outputFormat = 'ZIP'; }
+      else if (formatType === 'print_A3+_pdf') { paperSize = 'A3+'; outputFormat = 'PDF'; }
+      else if (formatType === 'print_A3_pdf') { paperSize = 'A3'; outputFormat = 'PDF'; }
+      else if (formatType === 'print_A4_pdf') { paperSize = 'A4'; outputFormat = 'PDF'; }
+
+      await generatePrintLayoutSheets(codes, paperSize, outputFormat, labelSuffix);
+    }
+
+    async function generatePrintLayoutSheets(codes, paperSize, outputFormat, labelSuffix) {
       try {
         await renderPipeline.init();
 
@@ -1172,9 +1190,8 @@
         } else if (paperSize === 'A3') {
           sheetWidth = 3508; sheetHeight = 4960; cols = 3; rows = 3; cardSize = 1000; gapX = 120; gapY = 120; marginLeft = 124; marginTop = 350; cornerRadius = 120; pdfUnitWidth = 297; pdfUnitHeight = 420;
         } else if (paperSize === '27.5x46') {
-          // OPSI KHUSUS BATAS MAKSIMAL VENDOR CETAK (27.5 x 46 cm) -> GRID 2x4 (8 KARTU/LEMBAR)
           sheetWidth = 3300; sheetHeight = 5520; cols = 2; rows = 4; cardSize = 1200; gapX = 200; gapY = 100; marginLeft = 350; marginTop = 260; cornerRadius = 144; pdfUnitWidth = 275; pdfUnitHeight = 460;
-        } else { // A3+ Standard
+        } else {
           sheetWidth = 3948; sheetHeight = 5796; cols = 3; rows = 4; cardSize = 1200; gapX = 150; gapY = 150; marginLeft = 24; marginTop = 273; cornerRadius = 144; pdfUnitWidth = 329; pdfUnitHeight = 483;
         }
 
@@ -1187,7 +1204,7 @@
 
         if (outputFormat === 'ZIP') {
           zip = new JSZip();
-          folder = zip.folder(`Print_Layout_${paperSize}`);
+          folder = zip.folder(`Layout_${paperSize}_${labelSuffix}`);
         } else {
           const { jsPDF } = window.jspdf;
           let pdfFormat;
@@ -1210,10 +1227,8 @@
 
         for (let sheetIdx = 0; sheetIdx < totalSheets; sheetIdx++) {
           ctx.clearRect(0, 0, sheetWidth, sheetHeight);
-
           ctx.fillStyle = '#FFFFFF';
           ctx.fillRect(0, 0, sheetWidth, sheetHeight);
-
           ctx.imageSmoothingEnabled = true;
           ctx.imageSmoothingQuality = 'high';
 
@@ -1232,8 +1247,7 @@
             const x = marginLeft + col * (cardSize + gapX);
             const y = marginTop + row * (cardSize + gapY);
 
-            updateProgressBar(globalIndex, codes.length, `Layout Cetak ${paperSize} (${outputFormat})`, `[Sheet ${sheetIdx + 1}/${totalSheets}] Memproses kartu (${globalIndex}/${codes.length}): ${code}`);
-
+            updateProgressBar(globalIndex, codes.length, `Layout Cetak ${paperSize} (${outputFormat})`, `[Lembar ${sheetIdx + 1}/${totalSheets}] Kartu (${globalIndex}/${codes.length}): ${code}`);
             await renderPipeline.renderCardDirectToContext(ctx, x, y, cardSize, cornerRadius, code);
           }
 
@@ -1256,15 +1270,14 @@
           updateProgressBar(codes.length, codes.length, "Mengompresi ZIP...", "Menyimpan seluruh lembar gambar...");
           const content = await zip.generateAsync({ type: "blob" });
           closeProgressBar();
-          saveAs(content, `Print_Layout_${paperSize}_${codes.length}_Kartu.zip`);
+          saveAs(content, `Layout_${paperSize}_${labelSuffix}.zip`);
           showNotification('Berhasil', `File Layout Cetak ${paperSize} (ZIP) berhasil diunduh!`, 'success');
         } else {
-          updateProgressBar(codes.length, codes.length, "Menyimpan Document PDF...", "Menyusun PDF Multi-Halaman...");
-          pdfDoc.save(`Print_Layout_${paperSize}_${codes.length}_Kartu.pdf`);
+          updateProgressBar(codes.length, codes.length, "Menyimpan PDF...", "Menyusun PDF Siap Cetak...");
+          pdfDoc.save(`Layout_${paperSize}_${labelSuffix}.pdf`);
           closeProgressBar();
-          showNotification('Berhasil', `File Document PDF Cetak ${paperSize} berhasil diunduh!`, 'success');
+          showNotification('Berhasil', `File PDF Cetak ${paperSize} berhasil diunduh!`, 'success');
         }
-
       } catch (err) {
         closeProgressBar();
         showNotification('Gagal', err.message, 'error');
@@ -1347,7 +1360,7 @@
       document.getElementById('nfc-modal').classList.add('hidden');
     }
 
-    // RENDER TABEL DENGAN PAGINASI & SELEKSI CHECKBOX PERSISTEN
+    // RENDER TABEL KARTU
     function renderCardsTable(data) {
       const tbody = document.getElementById('cardsTableBody');
       tbody.innerHTML = '';
@@ -1358,7 +1371,7 @@
       updateBulkToolbar();
 
       if (!data || data.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="9" class="py-8 text-center text-slate-400 font-medium text-xs">Belum ada data kartu yang cocok dengan filter.</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="8" class="py-8 text-center text-slate-400 font-medium text-xs">Belum ada data kartu yang cocok dengan filter.</td></tr>`;
         renderPaginationControls(0, 0, 0, 1);
         return;
       }
@@ -1373,9 +1386,16 @@
 
       pageData.forEach(card => {
         const isChecked = selectedCardCodesSet.has(card.card_code);
-        const badge = card.is_activated ? `<span class="bg-emerald-100 text-emerald-700 px-2.5 py-1 rounded-full text-[11px] font-bold inline-flex items-center gap-1">🟢 Aktif</span>` : `<span class="bg-amber-100 text-amber-700 px-2.5 py-1 rounded-full text-[11px] font-bold inline-flex items-center gap-1">🟡 Blank</span>`;
+        const badge = card.is_activated
+          ? `<span class="bg-emerald-100 text-emerald-700 px-2.5 py-1 rounded-full text-[11px] font-bold inline-flex items-center gap-1">🟢 Aktif</span>`
+          : `<span class="bg-amber-100 text-amber-700 px-2.5 py-1 rounded-full text-[11px] font-bold inline-flex items-center gap-1">🟡 Blank</span>`;
         const isRoutingOn = card.enable_routing !== false;
-        const resellerBadge = card.reseller_id ? `<br><span class="text-[10px] text-indigo-600 font-semibold bg-indigo-50 px-1.5 py-0.5 rounded">ID: ${card.reseller_id}</span>` : '';
+        const batchBadge = card.reseller_notes
+          ? `<span class="bg-slate-100 text-slate-700 px-2 py-1 rounded-lg text-xs font-medium">${card.reseller_notes}</span>`
+          : `<span class="text-slate-400 text-xs">-</span>`;
+        const bizInfo = card.business_name
+          ? `<div class="font-semibold text-slate-800">${card.business_name}</div><div class="text-[11px] font-mono text-slate-400">${card.owner_phone ? '+' + card.owner_phone : ''}</div>`
+          : `<span class="text-slate-400 text-xs">Belum diaktivasi</span>`;
         
         tbody.innerHTML += `
           <tr class="hover:bg-slate-50/80 transition-all ${isChecked ? 'bg-blue-50/40' : ''}">
@@ -1383,9 +1403,8 @@
               <input type="checkbox" class="card-checkbox w-4 h-4 text-blue-600 rounded cursor-pointer" value="${card.card_code}" ${isChecked ? 'checked' : ''} onchange="handleCardCheckboxChange('${card.card_code}', this.checked)">
             </td>
             <td class="py-3.5 px-4 font-bold text-slate-900 font-mono">${card.card_code}</td>
-            <td class="py-3.5 px-4 text-xs font-medium text-slate-600"><span class="bg-slate-100 px-2 py-1 rounded-lg">${card.category || 'Retail Local'}</span>${resellerBadge}</td>
-            <td class="py-3.5 px-4 font-semibold text-slate-700">${card.business_name || '-'}</td>
-            <td class="py-3.5 px-4 text-xs font-mono text-slate-600">${card.owner_phone ? '+' + card.owner_phone : '-'}</td>
+            <td class="py-3.5 px-4">${batchBadge}</td>
+            <td class="py-3.5 px-4">${bizInfo}</td>
             <td class="py-3.5 px-4">${badge}</td>
             <td class="py-3.5 px-4 text-center">
               <button onclick="toggleRouting('${card.card_code}', ${isRoutingOn})" class="px-2.5 py-1 rounded-xl text-[10px] font-bold border transition-all ${isRoutingOn ? 'bg-blue-50 text-blue-700 border-blue-200' : 'bg-slate-100 text-slate-500 border-slate-200'}">
@@ -1495,78 +1514,6 @@
       if (!error) fetchCards();
     }
 
-    function openCsvFilterModal() {
-      document.getElementById('csvCategorySelect').value = 'all';
-      document.getElementById('csvStartCode').value = '';
-      document.getElementById('csvEndCode').value = '';
-      document.getElementById('csv-filter-modal').classList.remove('hidden');
-    }
-    function closeCsvFilterModal() { document.getElementById('csv-filter-modal').classList.add('hidden'); }
-
-    function processFilteredCsvExport() {
-      const selectedCat = document.getElementById('csvCategorySelect').value;
-      const startCode = document.getElementById('csvStartCode').value.trim().toUpperCase();
-      const endCode = document.getElementById('csvEndCode').value.trim().toUpperCase();
-
-      let filteredCards = allCardsData;
-      if (selectedCat !== 'all') filteredCards = filteredCards.filter(c => (c.category || 'Retail Local') === selectedCat);
-      if (startCode && endCode) filteredCards = filteredCards.filter(c => c.card_code >= startCode && c.card_code <= endCode);
-
-      if (filteredCards.length === 0) { showNotification('Informasi', 'Tidak ada data kartu.', 'info'); return; }
-      closeCsvFilterModal();
-
-      let csvContent = "data:text/csv;charset=utf-8,Kode Kartu,Kategori,Reseller ID,Catatan Reseller,URL NFC dan QR,Nama Bisnis,No WA Owner,Status,PIN,Smart Routing\n";
-      filteredCards.forEach(card => {
-        csvContent += `${card.card_code},"${card.category || 'Retail Local'}","${card.reseller_id || ''}","${card.reseller_notes || ''}",${DOMAIN_BASE}/?code=${card.card_code},"${card.business_name || '-'}",${card.owner_phone || ''},${card.is_activated ? 'AKTIF' : 'BLANK'},${card.pin || ''},${card.enable_routing !== false ? 'ON' : 'OFF'}\n`;
-      });
-
-      const fileName = selectedCat !== 'all' ? `Data_Kartu_${selectedCat.replace(/[^a-zA-Z0-9]/g, '_')}.csv` : `Data_Kartu_${startCode || 'ALL'}_to_${endCode || 'ALL'}.csv`;
-      const link = document.createElement("a");
-      link.setAttribute("href", encodeURI(csvContent));
-      link.setAttribute("download", fileName);
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-    }
-
-    function openZipFilterModal() {
-      document.getElementById('zipCategorySelect').value = 'all';
-      document.getElementById('zipStartCode').value = '';
-      document.getElementById('zipEndCode').value = '';
-      document.getElementById('zip-filter-modal').classList.remove('hidden');
-    }
-    function closeZipFilterModal() { document.getElementById('zip-filter-modal').classList.add('hidden'); }
-
-    async function processFilteredZipDownload() {
-      const selectedCat = document.getElementById('zipCategorySelect').value;
-      const startCode = document.getElementById('zipStartCode').value.trim().toUpperCase();
-      const endCode = document.getElementById('zipEndCode').value.trim().toUpperCase();
-
-      let filteredCards = allCardsData;
-      if (selectedCat !== 'all') filteredCards = filteredCards.filter(c => (c.category || 'Retail Local') === selectedCat);
-      if (startCode && endCode) filteredCards = filteredCards.filter(c => c.card_code >= startCode && c.card_code <= endCode);
-
-      if (filteredCards.length === 0) { showNotification('Informasi', 'Tidak ada data kartu ditemukan.', 'info'); return; }
-      closeZipFilterModal();
-
-      const zip = new JSZip();
-      const folderName = selectedCat !== 'all' ? `QR_Mentahan_${selectedCat.replace(/[^a-zA-Z0-9]/g, '_')}` : "QR_Mentahan_RenderProject";
-      const folder = zip.folder(folderName);
-
-      for (let i = 0; i < filteredCards.length; i++) {
-        const card = filteredCards[i];
-        updateProgressBar(i + 1, filteredCards.length, "Generasi QR Mentahan", `Memproses QR (${i + 1}/${filteredCards.length}): ${card.card_code}`);
-        const dataUrl = await renderPipeline.generateQrDataUrl(`${DOMAIN_BASE}/?code=${card.card_code}`);
-        if (dataUrl) folder.file(`QR_${card.card_code}.png`, dataUrl.replace(/^data:image\/png;base64,/, ""), { base64: true });
-        await new Promise(r => setTimeout(r, 20));
-      }
-
-      updateProgressBar(filteredCards.length, filteredCards.length, "Mengompresi ZIP...", "Menyusun file...");
-      const content = await zip.generateAsync({ type: "blob" });
-      closeProgressBar();
-      saveAs(content, `QR_Mentahan_${selectedCat !== 'all' ? selectedCat.replace(/[^a-zA-Z0-9]/g, '_') : 'Range'}.zip`);
-    }
-
     async function downloadCompleteCardDesignModal() {
       try {
         const cardDataUrl = await renderPipeline.renderSingleCard(activeCardCodeForDownload);
@@ -1579,59 +1526,6 @@
         showNotification('Berhasil', 'Desain kartu lengkap berhasil diunduh!', 'success');
       } catch (err) {
         showNotification('Perhatian', err.message, 'error');
-      }
-    }
-
-    function openCardDesignZipModal() {
-      document.getElementById('designZipCategorySelect').value = 'all';
-      document.getElementById('designZipStartCode').value = '';
-      document.getElementById('designZipEndCode').value = '';
-      document.getElementById('design-zip-modal').classList.remove('hidden');
-    }
-    function closeCardDesignZipModal() { document.getElementById('design-zip-modal').classList.add('hidden'); }
-
-    async function processCardDesignZipDownload() {
-      const selectedCat = document.getElementById('designZipCategorySelect').value;
-      const startCode = document.getElementById('designZipStartCode').value.trim().toUpperCase();
-      const endCode = document.getElementById('designZipEndCode').value.trim().toUpperCase();
-
-      let filteredCards = allCardsData;
-      if (selectedCat !== 'all') filteredCards = filteredCards.filter(c => (c.category || 'Retail Local') === selectedCat);
-      if (startCode && endCode) filteredCards = filteredCards.filter(c => c.card_code >= startCode && c.card_code <= endCode);
-
-      if (filteredCards.length === 0) { 
-        showNotification('Informasi', 'Tidak ada data kartu yang cocok untuk dibuatkan ZIP Desain.', 'info'); 
-        return; 
-      }
-
-      closeCardDesignZipModal();
-
-      try {
-        const zip = new JSZip();
-        const folderName = selectedCat !== 'all' ? `Desain_Kartu_${selectedCat.replace(/[^a-zA-Z0-9]/g, '_')}` : "Desain_Kartu_RenderProject";
-        const folder = zip.folder(folderName);
-
-        for (let i = 0; i < filteredCards.length; i++) {
-          const card = filteredCards[i];
-          updateProgressBar(i + 1, filteredCards.length, "Generasi Desain Kartu (ZIP)", `Membuat Desain (${i + 1}/${filteredCards.length}): ${card.card_code}`);
-          
-          const cardDataUrl = await renderPipeline.renderSingleCard(card.card_code);
-          if (cardDataUrl) {
-            folder.file(`Desain_${card.card_code}.png`, cardDataUrl.replace(/^data:image\/png;base64,/, ""), { base64: true });
-          }
-          await new Promise(r => setTimeout(r, 30));
-        }
-
-        updateProgressBar(filteredCards.length, filteredCards.length, "Mengompresi ke ZIP...", "Menyusun file...");
-        const content = await zip.generateAsync({ type: "blob" });
-        closeProgressBar();
-
-        const zipFileName = selectedCat !== 'all' ? `Desain_Kategori_${selectedCat.replace(/[^a-zA-Z0-9]/g, '_')}.zip` : `Desain_Range_${startCode || 'ALL'}_to_${endCode || 'ALL'}.zip`;
-        saveAs(content, zipFileName);
-        showNotification('Berhasil', 'ZIP Desain Kartu Lengkap berhasil diunduh!', 'success');
-      } catch (err) {
-        closeProgressBar();
-        showNotification('Gagal', err.message, 'error');
       }
     }
 
@@ -1671,101 +1565,11 @@
       return clean;
     }
 
-    function openBatchModal() {
-      document.getElementById('batchCategory').value = 'Reseller Lynk.id';
-      document.getElementById('batchResellerId').value = '';
-      document.getElementById('batchResellerNotes').value = '';
-      document.getElementById('batchPrefix').value = '';
-      document.getElementById('batchStart').value = '';
-      document.getElementById('batchCount').value = '';
-      document.getElementById('batchPin').value = '';
-      document.getElementById('batchEnableRouting').checked = false;
-      document.getElementById('batch-modal').classList.remove('hidden');
-    }
-    function closeBatchModal() { document.getElementById('batch-modal').classList.add('hidden'); }
-
-    async function submitBatchGenerate() {
-      const category = document.getElementById('batchCategory').value;
-      const resellerId = document.getElementById('batchResellerId').value.trim() || null;
-      const resellerNotes = document.getElementById('batchResellerNotes').value.trim() || null;
-      const prefix = document.getElementById('batchPrefix').value.trim().toUpperCase();
-      const startNum = parseInt(document.getElementById('batchStart').value);
-      const count = parseInt(document.getElementById('batchCount').value);
-      const defaultPin = document.getElementById('batchPin').value.trim() || null;
-      const enableRouting = document.getElementById('batchEnableRouting').checked;
-
-      if (isNaN(count) || count <= 0) {
-        showNotification('Perhatian', 'Mohon isi Jumlah kartu dengan benar.', 'info');
-        return;
-      }
-      if (count > 200) { showNotification('Batas Maksimal', 'Maksimal 200 kartu sekali generate!', 'info'); return; }
-      
-      setButtonLoading('batchSubmitBtn', true, 'Proses Massal');
-
-      const existingSet = new Set(allCardsData.map(c => c.card_code.toUpperCase()));
-      const batchPayload = [];
-
-      for (let i = 0; i < count; i++) {
-        let cardCode = '';
-        if (prefix && !isNaN(startNum)) {
-          cardCode = `${prefix}${String(startNum + i).padStart(3, '0')}`;
-        } else {
-          cardCode = generateRandomUniqueCode('RSC', category, existingSet);
-        }
-
-        batchPayload.push({ 
-          card_code: cardCode, 
-          category: category,
-          reseller_id: resellerId,
-          reseller_notes: resellerNotes,
-          pin: defaultPin, 
-          is_activated: false, 
-          enable_routing: enableRouting 
-        });
-      }
-
-      const { error } = await supabaseClient.from('cards').upsert(batchPayload, { onConflict: 'card_code' });
-      setButtonLoading('batchSubmitBtn', false, 'Proses Massal');
-
-      if (!error) { 
-        showNotification('Berhasil', `Berhasil membuat ${count} kartu Google Review!`, 'success', () => {
-          closeBatchModal(); 
-          fetchCards();
-        });
-      } else {
-        showNotification('Gagal', error.message, 'error');
-      }
-    }
-
-    function openAddModal() {
-      editingOriginalCode = null;
-      document.getElementById('modalFormTitle').innerText = "Tambah Kartu Baru";
-      document.getElementById('modalFormSub').innerText = "Masukkan kode kartu unik baru.";
-      document.getElementById('formCategory').value = 'Retail Local';
-      document.getElementById('formResellerId').value = '';
-      document.getElementById('formResellerNotes').value = '';
-      
-      autoGenerateSingleCode('RSC');
-
-      const codeInput = document.getElementById('formCardCode');
-      codeInput.disabled = false;
-      document.getElementById('btnAcakKode').classList.remove('hidden');
-
-      document.getElementById('formBizName').value = '';
-      document.getElementById('formReviewUrl').value = '';
-      document.getElementById('formOwnerPhone').value = '';
-      document.getElementById('formPin').value = '';
-      document.getElementById('formEnableRouting').checked = false;
-      document.getElementById('card-modal').classList.remove('hidden');
-    }
-
+    // MODAL EDIT KARTU
     function openEditModal(code) {
       const card = allCardsData.find(c => c.card_code === code);
       if (!card) return;
       editingOriginalCode = card.card_code;
-      document.getElementById('formCategory').value = card.category || 'Retail Local';
-      document.getElementById('formResellerId').value = card.reseller_id || '';
-      document.getElementById('formResellerNotes').value = card.reseller_notes || '';
       
       const codeInput = document.getElementById('formCardCode');
       codeInput.value = card.card_code;
@@ -1773,28 +1577,35 @@
         codeInput.disabled = true;
         document.getElementById('btnAcakKode').classList.add('hidden');
         document.getElementById('modalFormTitle').innerText = `Edit Kartu Aktif (${code})`;
-        document.getElementById('modalFormSub').innerText = "🔒 Kode dikunci karena sudah aktif.";
+        document.getElementById('modalFormSub').innerText = "🔒 Kode dikunci karena sudah aktif digunakan klien.";
       } else {
         codeInput.disabled = false;
         document.getElementById('btnAcakKode').classList.remove('hidden');
         document.getElementById('modalFormTitle').innerText = `Edit Kartu Blank (${code})`;
-        document.getElementById('modalFormSub').innerText = "✏️ Ubah kode kartu blank.";
+        document.getElementById('modalFormSub').innerText = "✏️ Ubah kode atau isi data aktivasi manual.";
       }
+
+      document.getElementById('formBatchNotes').value = card.reseller_notes || '';
       document.getElementById('formBizName').value = card.business_name || '';
       document.getElementById('formReviewUrl').value = card.google_review_url || '';
       document.getElementById('formOwnerPhone').value = card.owner_phone || '';
       document.getElementById('formPin').value = card.pin || '';
       document.getElementById('formEnableRouting').checked = card.enable_routing !== false;
-      document.getElementById('card-modal').classList.remove('hidden');
+      document.getElementById('edit-modal').classList.remove('hidden');
     }
 
-    function closeModal() { document.getElementById('card-modal').classList.add('hidden'); }
+    function randomizeEditCode() {
+      document.getElementById('formCardCode').value = generateUniversalUniqueCode(allCardsData);
+    }
+
+    function closeEditModal() {
+      document.getElementById('edit-modal').classList.add('hidden');
+    }
 
     async function saveCardData() {
-      const category = document.getElementById('formCategory').value;
-      const resellerId = document.getElementById('formResellerId').value.trim() || null;
-      const resellerNotes = document.getElementById('formResellerNotes').value.trim() || null;
+      const existingCard = allCardsData.find(c => c.card_code === editingOriginalCode);
       const newCode = document.getElementById('formCardCode').value.trim().toUpperCase();
+      const batchNotes = document.getElementById('formBatchNotes').value.trim() || null;
       const name = document.getElementById('formBizName').value.trim();
       const urlInput = document.getElementById('formReviewUrl').value.trim();
       const rawOwnerPhone = document.getElementById('formOwnerPhone').value.trim();
@@ -1807,11 +1618,11 @@
       if (editingOriginalCode && editingOriginalCode !== newCode) {
         await supabaseClient.from('cards').delete().eq('card_code', editingOriginalCode);
       }
+
       const payload = {
         card_code: newCode,
-        category: category,
-        reseller_id: resellerId,
-        reseller_notes: resellerNotes,
+        category: (existingCard && existingCard.category) ? existingCard.category : 'Universal',
+        reseller_notes: batchNotes,
         business_name: name || null,
         google_review_url: formatReviewUrl(urlInput) || null,
         owner_phone: sanitizePhoneNumber(rawOwnerPhone) || null,
@@ -1819,11 +1630,12 @@
         is_activated: name.length > 0 || urlInput.length > 0 || rawOwnerPhone.length > 0,
         enable_routing: routing
       };
+
       const { error } = await supabaseClient.from('cards').upsert(payload, { onConflict: 'card_code' });
       setButtonLoading('saveCardBtn', false, 'Simpan');
       if (!error) { 
-        showNotification('Berhasil', 'Data kartu berhasil disimpan.', 'success', () => {
-          closeModal(); 
+        showNotification('Berhasil', 'Data kartu berhasil diperbarui.', 'success', () => {
+          closeEditModal(); 
           fetchCards();
         });
       } else {
