@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pencarian Alamat Google Maps</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 50px;
+        }
+        /* Styling untuk kotak pencarian */
+        #search-box {
+            width: 100%;
+            max-width: 400px;
+            padding: 12px 15px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            outline: none;
+        }
+        #search-box:focus {
+            border-color: #1a73e8;
+        }
+        /* Styling untuk peta */
+        #map {
+            height: 400px;
+            width: 100%;
+            max-width: 600px;
+            margin-top: 20px;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+        }
+        #result {
+            margin-top: 15px;
+            font-size: 14px;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+
+    <h2>Cari Alamat Lokasi</h2>
+    <!-- Kolom Input untuk Pencarian -->
+    <input id="search-box" type="text" placeholder="Ketik nama tempat atau alamat...">
+    
+    <div id="result"></div>
+
+    <!-- Container Peta -->
+    <div id="map"></div>
+
+    <!-- Script Google Maps API (Muat library places) -->
+    <script async defer
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCgrgLMCkFvMzDXR_mJv1diFtqiUF7RjvY&libraries=places&callback=initMap">
+    </script>
+
+    <script>
+        function initMap() {
+            // 1. Inisialisasi Peta (pusat default di Jakarta)
+            const mapOptions = {
+                center: { lat: -6.2088, lng: 106.8456 },
+                zoom: 13
+            };
+            const map = new google.maps.Map(document.getElementById("map"), mapOptions);
+            const marker = new google.maps.Marker({ map: map });
+
+            // 2. Hubungkan input dengan Google Places Autocomplete
+            const input = document.getElementById("search-box");
+            const autocomplete = new google.maps.places.Autocomplete(input);
+
+            // Batasi pencarian jika ingin difokuskan ke negara tertentu (contoh: Indonesia 'id')
+            autocomplete.setComponentRestrictions({ country: ["id"] });
+
+            // Atribut data apa saja yang ingin diambil
+            autocomplete.setFields(["address_components", "geometry", "icon", "name", "formatted_address"]);
+
+            // 3. Event ketika pengguna memilih salah satu alamat dari dropdown
+            autocomplete.addListener("place_changed", () => {
+                const place = autocomplete.getPlace();
+
+                if (!place.geometry || !place.geometry.location) {
+                    alert("Detail lokasi tidak ditemukan untuk: '" + place.name + "'");
+                    return;
+                }
+
+                // Pindahkan posisi peta ke lokasi yang dipilih
+                map.setCenter(place.geometry.location);
+                map.setZoom(15);
+                marker.setPosition(place.geometry.location);
+
+                // Tampilkan informasi detail alamat dan koordinat di bawah input
+                document.getElementById("result").innerHTML = `
+                    <strong>Alamat Lengkap:</strong> ${place.formatted_address} <br>
+                    <strong>Latitude:</strong> ${place.geometry.location.lat()} <br>
+                    <strong>Longitude:</strong> ${place.geometry.location.lng()}
+                `;
+            });
+        }
+    </script>
+
+</body>
+</html>
